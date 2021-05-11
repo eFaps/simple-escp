@@ -1,26 +1,7 @@
-simple-escp [ ![Download](https://api.bintray.com/packages/jockihendry/maven/simple-escp/images/download.png) ](https://bintray.com/jockihendry/maven/simple-escp/_latestVersion)
+simple-escp
 ===========
+This is  a clone of  http://jockihendry.github.io/simple-escp
 
-For more information, visit [documentation site](http://jockihendry.github.io/simple-escp) or download 
-[PDF documentation](http://jockihendry.github.io/simple-escp/simple-escp-doc.pdf).
-
-Getting Started
----------------
-
-To use `simple-escp`, download zip distribution from https://github.com/JockiHendry/simple-escp/releases.  Inside the archive are JAR files that need to be included in project that uses `simple-escp`.
-
-`simple-escp` is also hosted in bintray.  In a project that uses Gradle, add the following configuration to *build.gradle* to use `simple-escp`:
-
-```groovy
-repositories {
-    maven {
-        url "http://dl.bintray.com/jockihendry/maven"
-    }
-}
-dependencies {
-    compile group: 'jockihendry', name: 'simple-escp', version: '0.3'
-}
-```
 
 Introduction
 ------------
