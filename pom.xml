@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.efaps</groupId>
+        <artifactId>efaps-parent</artifactId>
+        <version>11.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>simple-escp</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Simple ESCP</name>
+    <url>https://github.com/eFaps/simple-escp</url>
+    <inceptionYear>Nov 2015</inceptionYear>
+    <organization>
+        <url>http://www.efaps.org</url>
+        <name>eFaps</name>
+    </organization>
+    <scm>
+        <url>https://github.com/eFaps/simple-escp</url>
+        <connection>scm:git:git@github.com:eFaps/simple-escp</connection>
+        <developerConnection>scm:git:git@github.com:eFaps/simple-escp</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <issueManagement>
+        <system>github.com</system>
+        <url>https://github.com/eFaps/simple-escp/issues</url>
+    </issueManagement>
+    <developers>
+        <developer>
+            <name>JockiHendry</name>
+            <organizationUrl>http://www.brsanthu.com</organizationUrl>
+            <url>http://www.brsanthu.com</url>
+            <roles>
+                <role>Original Developer</role>
+            </roles>
+            <email>owner@jocki.me</email>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <properties>
+        <java-version>11</java-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+    </dependencies>
+</project>
