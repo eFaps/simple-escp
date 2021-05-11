@@ -1,52 +1,22 @@
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.4.1'
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:0.7.3'
-    }
+
+
 }
 
 apply plugin: 'java'
-apply plugin: 'findbugs'
-apply plugin: 'checkstyle'
-apply plugin: 'java-library-distribution'
-apply plugin: 'idea'
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 
-sourceCompatibility = 1.7
-version = '0.5.3'
-group = 'jockihendry'
+sourceCompatibility = 11
+version = '0.6.0'
+group = 'efaps'
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
-    runtime group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-}
-
-distributions {
-    main {
-        baseName = 'simple-escp'
-    }
-}
-
-checkstyle {
-    sourceSets = [sourceSets.main]
-}
-
-tasks.withType(FindBugs) {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
+    implementation group: 'javax.json', name: 'javax.json-api', version: '1.0'
+    implementation group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
+    testImplementation group: 'junit', name: 'junit', version: '4.11'
 }
 
 test {
@@ -72,44 +42,3 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-artifacts {
-    archives sourcesJar, javadocJar
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            artifact sourcesJar {
-                classifier "sources"
-            }
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-        }
-    }
-}
-
-bintray {
-    user = bintrayUser
-    key = bintrayKey
-    publications = ['mavenJava']
-    publish = false
-    pkg {
-        repo = 'maven'
-        userOrg = 'jockihendry'
-        name = 'simple-escp'
-        licenses = ['Apache-2.0']
-    }
-}
-
-asciidoctor {
-    backends = ['html5','docbook']
-    baseDir = file("${projectDir}/src/asciidoc")
-    options = [
-        attributes: [
-            'revnumber': version
-        ]
-    ]
-}
