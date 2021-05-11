@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import simple.escp.data.BeanDataSource;
@@ -57,7 +57,7 @@ public class JsonTemplateFillTest {
     private final String SELECT_UNDERLINE = EscpUtil.escSelectUnderline();
     private final String CANCEL_UNDERLINE = EscpUtil.escCancelUnderline();
 
-    @BeforeAll
+    @BeforeEach
     public void setup() {
         jsonStringBasic = "{" +
             "\"template\": [" +

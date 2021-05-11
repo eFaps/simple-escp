@@ -14,7 +14,7 @@ import java.util.Map;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import simple.escp.data.DataSource;
@@ -29,7 +29,7 @@ public class WrappedBufferWithBorderTest {
     private TableFillHelper.WrappedBuffer wrappedBuffer;
     private Report generatedReport;
 
-    @BeforeAll
+    @BeforeEach
     public void setup() throws URISyntaxException, IOException {
         final JsonTemplate jsonTemplate = new JsonTemplate(getClass().getResource("/single_table_wrap2.json").toURI());
         final List<JsonTemplateFillTest.Person> persons = new ArrayList<>();

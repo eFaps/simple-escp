@@ -19,13 +19,16 @@ package simple.escp.printer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import jdk.jfr.Category;
 import simple.escp.SimpleEscp;
 import simple.escp.Template;
 import simple.escp.json.JsonTemplate;
-@Category("---")
+
+@Disabled
+@Tag("RequirePrinterCategory")
 public class SimpleEscpTest {
 
     @Test
