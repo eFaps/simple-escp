@@ -1,24 +1,27 @@
 package simple.escp.data;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static simple.escp.util.EscpUtil.CRFF;
+import static simple.escp.util.EscpUtil.CRLF;
+
+import java.util.List;
+
+import javax.json.JsonObject;
+
+import org.junit.jupiter.api.Test;
+
 import simple.escp.fill.FillJob;
 import simple.escp.json.JsonTemplate;
 import simple.escp.util.EscpUtil;
-import javax.json.JsonObject;
-import java.util.List;
-import static org.junit.Assert.*;
-import static simple.escp.util.EscpUtil.*;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CustomDataSourceTest {
 
     private final String INIT = EscpUtil.escInitalize();
 
     @Test
     public void customDataSource_01() {
-        String jsonTemplate = "{" +
+        final String jsonTemplate = "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 90" +
             "}," +
@@ -33,7 +36,7 @@ public class CustomDataSourceTest {
             "]" +
         "}";
 
-        String jsonData = "{" +
+        final String jsonData = "{" +
             "\"line1\": \"This is line1\"," +
             "\"tables\": [" +
                 "{\"data\": \"This is data1\"}," +
@@ -45,7 +48,7 @@ public class CustomDataSourceTest {
         DataSources.register(String.class, CustomJsonDataSource.class);
         DataSources.register(JsonObject.class, CustomJsonDataSource.class);
 
-        String result = new FillJob(new JsonTemplate(jsonTemplate).parse(), DataSources.from(jsonData)).fill();
+        final String result = new FillJob(new JsonTemplate(jsonTemplate).parse(), DataSources.from(jsonData)).fill();
         assertEquals( INIT +
             "Value: This is line1" + CRLF +
             "data         " + CRLF +
@@ -60,7 +63,7 @@ public class CustomDataSourceTest {
     @Test
     public void customDataSource_02() {
         DataSources.unregister(CustomJsonDataSource.class);
-        List<DataSources.DataSourceEntry> dataSources = DataSources.DATA_SOURCES;
+        final List<DataSources.DataSourceEntry> dataSources = DataSources.DATA_SOURCES;
         assertEquals(4, dataSources.size());
     }
 

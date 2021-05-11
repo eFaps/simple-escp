@@ -16,14 +16,14 @@
 
 package simple.escp.util;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Test;
 public class EscpUtilTest {
 
     @Test
     public void esc() {
-        String result = EscpUtil.esc(55);
+        final String result = EscpUtil.esc(55);
         assertEquals((char) 27, result.charAt(0));
         assertEquals((char) 55, result.charAt(1));
     }
@@ -46,28 +46,28 @@ public class EscpUtilTest {
 
     @Test
     public void escInitialize() {
-        String result = EscpUtil.escInitalize();
+        final String result = EscpUtil.escInitalize();
         assertEquals((char) 27, result.charAt(0));
         assertEquals((char) 64, result.charAt(1));
     }
 
     @Test
     public void escOnePerSixInchLineSpacing() {
-        String result = EscpUtil.escOnePerSixInchLineSpacing();
+        final String result = EscpUtil.escOnePerSixInchLineSpacing();
         assertEquals((char) 27, result.charAt(0));
         assertEquals((char) 50, result.charAt(1));
     }
 
     @Test
     public void escOnePerEightInchLineSpacing() {
-        String result = EscpUtil.escOnePerEightInchLineSpacing();
+        final String result = EscpUtil.escOnePerEightInchLineSpacing();
         assertEquals((char) 27, result.charAt(0));
         assertEquals((char) 48, result.charAt(1));
     }
 
     @Test
     public void escPageLength() {
-        String result = EscpUtil.escPageLength(10);
+        final String result = EscpUtil.escPageLength(10);
         assertEquals((char) 27, result.charAt(0));
         assertEquals((char) 67, result.charAt(1));
         assertEquals((char) 10, result.charAt(2));
@@ -75,7 +75,7 @@ public class EscpUtilTest {
 
     @Test
     public void escLeftMargin() {
-        String result = EscpUtil.escLeftMargin(5);
+        final String result = EscpUtil.escLeftMargin(5);
         assertEquals((char) 27, result.charAt(0));
         assertEquals((char) 108, result.charAt(1));
         assertEquals((char) 5, result.charAt(2));
@@ -83,7 +83,7 @@ public class EscpUtilTest {
 
     @Test
     public void escRightMargin() {
-        String result = EscpUtil.escRightMargin(50);
+        final String result = EscpUtil.escRightMargin(50);
         assertEquals((char) 27, result.charAt(0));
         assertEquals((char) 81, result.charAt(1));
         assertEquals((char) 50, result.charAt(2));
@@ -91,7 +91,7 @@ public class EscpUtilTest {
 
     @Test
     public void escBottomMargin() {
-        String result = EscpUtil.escBottomMargin(70);
+        final String result = EscpUtil.escBottomMargin(70);
         assertEquals((char) 27, result.charAt(0));
         assertEquals((char) 78, result.charAt(1));
         assertEquals((char) 70, result.charAt(2));

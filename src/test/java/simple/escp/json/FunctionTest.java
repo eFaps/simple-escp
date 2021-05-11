@@ -1,15 +1,30 @@
 package simple.escp.json;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static simple.escp.util.EscpUtil.CRFF;
+import static simple.escp.util.EscpUtil.CRLF;
+import static simple.escp.util.EscpUtil.escCancelBoldFont;
+import static simple.escp.util.EscpUtil.escCancelDoubleStrikeFont;
+import static simple.escp.util.EscpUtil.escCancelItalicFont;
+import static simple.escp.util.EscpUtil.escCancelSuperscriptOrSubscript;
+import static simple.escp.util.EscpUtil.escCancelUnderline;
+import static simple.escp.util.EscpUtil.escSelectBoldFont;
+import static simple.escp.util.EscpUtil.escSelectDoubleStrikeFont;
+import static simple.escp.util.EscpUtil.escSelectItalicFont;
+import static simple.escp.util.EscpUtil.escSelectSubscript;
+import static simple.escp.util.EscpUtil.escSelectSuperscript;
+import static simple.escp.util.EscpUtil.escSelectUnderline;
+
+import java.util.regex.Matcher;
+
+import org.junit.jupiter.api.Test;
+
 import simple.escp.dom.Line;
 import simple.escp.dom.Page;
 import simple.escp.dom.Report;
 import simple.escp.fill.FillJob;
 import simple.escp.fill.function.Function;
 import simple.escp.util.EscpUtil;
-import java.util.regex.Matcher;
-import static simple.escp.util.EscpUtil.*;
-import static org.junit.Assert.*;
 
 public class FunctionTest {
 
@@ -17,7 +32,7 @@ public class FunctionTest {
 
     @Test
     public void pageNo() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -33,7 +48,7 @@ public class FunctionTest {
                     "\"Page %{   PAGE_NO   }\"]" +
                 "}" +
             "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "Page 1" + CRLF + "Page 1" + CRLF + "Page 1" + CRLF + CRFF +
@@ -45,7 +60,7 @@ public class FunctionTest {
 
     @Test
     public void pageNoWithHeader() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -59,7 +74,7 @@ public class FunctionTest {
                 "\"Detail 5\"]" +
             "}" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "Halaman 1" + CRLF + "Detail 2" + CRLF + "Detail 3" + CRLF + CRFF +
@@ -71,7 +86,7 @@ public class FunctionTest {
 
     @Test
     public void ascii() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -82,7 +97,7 @@ public class FunctionTest {
                     "\"Result: %{176}%{177}%{178}\"]" +
                 "}" +
             "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "Result: ABC" + CRLF +
@@ -94,7 +109,7 @@ public class FunctionTest {
 
     @Test
     public void asciiWithRepeat() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -105,7 +120,7 @@ public class FunctionTest {
                     "\"Result: %{176 R 5}\"]" +
                 "}" +
             "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "Result: " + (char) 177 + (char) 177 + (char) 177 + (char) 177 + (char) 177 + (char) 177 + (char) 177 + (char) 177 + (char) 177 + (char) 177 + CRLF +
@@ -117,7 +132,7 @@ public class FunctionTest {
 
     @Test
     public void bold() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [" +
                 "\"%{BOLD}This is bold%{BOLD}\"," +
@@ -125,7 +140,7 @@ public class FunctionTest {
             "]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             escSelectBoldFont() + "This is bold" + escCancelBoldFont() + CRLF +
@@ -137,7 +152,7 @@ public class FunctionTest {
 
     @Test
     public void italic() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [" +
                 "\"%{ITALIC}This is italic%{ITALIC}\"," +
@@ -145,7 +160,7 @@ public class FunctionTest {
             "]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             escSelectItalicFont() + "This is italic" + escCancelItalicFont() + CRLF +
@@ -157,7 +172,7 @@ public class FunctionTest {
 
     @Test
     public void doubleStrike() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [" +
                 "\"%{DOUBLE}This is double-strike%{DOUBLE}\"," +
@@ -165,7 +180,7 @@ public class FunctionTest {
             "]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             escSelectDoubleStrikeFont() + "This is double-strike" + escCancelDoubleStrikeFont() + CRLF +
@@ -177,7 +192,7 @@ public class FunctionTest {
 
     @Test
     public void underline() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [" +
                 "\"%{UNDERLINE}This is underline%{UNDERLINE}\"," +
@@ -185,7 +200,7 @@ public class FunctionTest {
             "]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             escSelectUnderline() + "This is underline" + escCancelUnderline() + CRLF +
@@ -197,14 +212,14 @@ public class FunctionTest {
 
     @Test
     public void superscript() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [" +
                 "\"This is normal%{SUPER}This is superscript%{SUPER}\"" +
             "]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "This is normal" + escSelectSuperscript() + "This is superscript" + escCancelSuperscriptOrSubscript() +
@@ -215,14 +230,14 @@ public class FunctionTest {
 
     @Test
     public void subscript() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [" +
                 "\"This is normal%{SUB}This is subscript%{SUB}\"" +
             "]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "This is normal" + escSelectSubscript() + "This is subscript" + escCancelSuperscriptOrSubscript() +
@@ -233,7 +248,7 @@ public class FunctionTest {
 
     @Test
     public void autoIncrement() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [" +
                 "\"Result: %{INC AUTO_NO}\"," +
@@ -244,7 +259,7 @@ public class FunctionTest {
             "]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "Result: 1" + CRLF +
@@ -259,7 +274,7 @@ public class FunctionTest {
 
     @Test
     public void autoIncrementDuplicate() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [" +
                 "\"Result: %{INC AUTO_NO}\"," +
@@ -270,7 +285,7 @@ public class FunctionTest {
             "]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "Result: 1" + CRLF +
@@ -285,7 +300,7 @@ public class FunctionTest {
 
     @Test
     public void lineNo() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -301,7 +316,7 @@ public class FunctionTest {
                 "\"Line %{LINE_NO}\"]" +
             "}" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "Halaman 1" + CRLF + "Line 2" + CRLF + "Line 3" + CRLF + CRFF +
@@ -314,7 +329,7 @@ public class FunctionTest {
 
     @Test
     public void globalLineNo() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -330,7 +345,7 @@ public class FunctionTest {
                 "\"Line %{GLOBAL_LINE_NO}\"]" +
             "}" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(
             INIT +
             "Halaman 1" + CRLF + "Line 2" + CRLF + "Line 3" + CRLF + CRFF +
@@ -343,14 +358,14 @@ public class FunctionTest {
 
     @Test
     public void customFunction() {
-        Function function = new CustomFunction();
+        final Function function = new CustomFunction();
         FillJob.addFunction(function);
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"template\": [\"Result: %{MY_CUSTOM}\"]" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         assertEquals(INIT + "Result: MyCustomResult" + CRLF + CRFF + INIT, new FillJob(jsonTemplate.parse()).fill());
 
         FillJob.removeFunction(function);
@@ -363,7 +378,7 @@ public class FunctionTest {
             super("%\\{\\s*(MY_CUSTOM)\\s*\\}");
         }
         @Override
-        public String process(Matcher matcher, Report report, Page page, Line line) {
+        public String process(final Matcher matcher, final Report report, final Page page, final Line line) {
             return "MyCustomResult";
         }
 

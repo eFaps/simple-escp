@@ -1,22 +1,24 @@
 package simple.escp.data;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.jupiter.api.Test;
 
 public class DataSourcesTest {
 
     @Test
     public void fromObject() {
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("firstName", "solid");
         map.put("lastName", "snake");
         DataSource ds = DataSources.from(map);
         assertEquals(MapDataSource.class, ds.getClass());
         assertEquals(map, ds.getSource());
 
-        BeanDataSourceTest.Employee emp = new BeanDataSourceTest.Employee("test", 10.0, 20.0);
+        final BeanDataSourceTest.Employee emp = new BeanDataSourceTest.Employee("test", 10.0, 20.0);
         ds = DataSources.from(emp);
         assertEquals(BeanDataSource.class, ds.getClass());
         assertEquals(emp, ds.getSource());
@@ -24,11 +26,11 @@ public class DataSourcesTest {
 
     @Test
     public void fromObjectArray() {
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("firstName", "solid");
         map.put("lastName", "snake");
-        BeanDataSourceTest.Employee emp = new BeanDataSourceTest.Employee("test", 10.0, 20.0);
-        DataSource[] ds = DataSources.from(new Object[]{map, emp});
+        final BeanDataSourceTest.Employee emp = new BeanDataSourceTest.Employee("test", 10.0, 20.0);
+        final DataSource[] ds = DataSources.from(new Object[]{map, emp});
 
         assertEquals(MapDataSource.class, ds[0].getClass());
         assertEquals(map, ds[0].getSource());
@@ -38,11 +40,11 @@ public class DataSourcesTest {
 
     @Test
     public void fromMapAndBean() {
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("firstName", "solid");
         map.put("lastName", "snake");
-        BeanDataSourceTest.Employee emp = new BeanDataSourceTest.Employee("test", 10.0, 20.0);
-        DataSource[] ds = DataSources.from(map, emp);
+        final BeanDataSourceTest.Employee emp = new BeanDataSourceTest.Employee("test", 10.0, 20.0);
+        final DataSource[] ds = DataSources.from(map, emp);
 
         assertEquals(MapDataSource.class, ds[0].getClass());
         assertEquals(map, ds[0].getSource());
@@ -52,8 +54,8 @@ public class DataSourcesTest {
 
     @Test
     public void fromNull() {
-        Object object = null;
-        DataSource dataSource = DataSources.from(object);
+        final Object object = null;
+        final DataSource dataSource = DataSources.from(object);
 
         assertEquals(EmptyDataSource.class, dataSource.getClass());
         assertEquals("", dataSource.get("anything"));

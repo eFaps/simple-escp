@@ -16,36 +16,36 @@
 
 package simple.escp.printer;
 
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import simple.escp.SimpleEscp;
-import simple.escp.Template;
-import simple.escp.category.RequirePrinterCategory;
-import simple.escp.json.JsonTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Category(RequirePrinterCategory.class)
+import org.junit.jupiter.api.Test;
+
+import jdk.jfr.Category;
+import simple.escp.SimpleEscp;
+import simple.escp.Template;
+import simple.escp.json.JsonTemplate;
+@Category("---")
 public class SimpleEscpTest {
 
     @Test
     public void printString() {
-        SimpleEscp simpleEscp = new SimpleEscp("EPSON LX-310 ESC/P");
+        final SimpleEscp simpleEscp = new SimpleEscp("EPSON LX-310 ESC/P");
         simpleEscp.print("printString(): Executing SimpleEscpTest.printString()\n" +
             "printString(): And this this a second line.\n");
     }
 
     @Test
     public void printStringFromDefaultPrinter() {
-        SimpleEscp simpleEscp = new SimpleEscp();
+        final SimpleEscp simpleEscp = new SimpleEscp();
         simpleEscp.print("printStringFromDefaultPrinter(): Executing SimpleEscpTest.printStringFromDefaultPrinter()\n" +
             "printStringFromDefaultPrinter(): And this this a second line.\n");
     }
 
     @Test
     public void printTemplateBasedOnMap() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"placeholder\": [" +
                 "\"id\"," +
                 "\"nickname\"" +
@@ -56,9 +56,9 @@ public class SimpleEscpTest {
                 "\"Name  : Mr. ${nickname}.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
-        Map<String, String> data = new HashMap<>();
+        final Map<String, String> data = new HashMap<>();
         data.put("id", "007");
         data.put("nickname", "The Solid Snake");
         simpleEscp.print(template, data, null);
@@ -66,8 +66,8 @@ public class SimpleEscpTest {
 
     @Test
     public void printLineSpacingOneEight() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"lineSpacing\": \"1/8\"" +
             "}," +
@@ -78,15 +78,15 @@ public class SimpleEscpTest {
                 "\"LineSpace 1/8: Fourth Line\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void print5Cpi() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"characterPitch\": \"5\"" +
             "}," +
@@ -94,15 +94,15 @@ public class SimpleEscpTest {
                 "\"5 cpi: This is an example text in 5 cpi.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void print10Cpi() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"characterPitch\": \"10\"" +
             "}," +
@@ -110,15 +110,15 @@ public class SimpleEscpTest {
                 "\"10 cpi: This is an example text in 10 cpi.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void print12Cpi() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"characterPitch\": \"12\"" +
             "}," +
@@ -126,15 +126,15 @@ public class SimpleEscpTest {
                 "\"12 cpi: This is an example text in 12 cpi.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void print17Cpi() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"characterPitch\": \"17\"" +
             "}," +
@@ -142,15 +142,15 @@ public class SimpleEscpTest {
                 "\"17 cpi: This is an example text in 17 cpi.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void print20Cpi() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"characterPitch\": \"20\"" +
             "}," +
@@ -158,15 +158,15 @@ public class SimpleEscpTest {
                 "\"20 cpi: This is an example text in 20 cpi.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printPageWidth() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"pageWidth\": \"10\"" +
             "}," +
@@ -176,15 +176,15 @@ public class SimpleEscpTest {
                 "\"Page Width 10: 1234567890.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printLeftAndRightMargin() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"pageWidth\": \"70\"," +
                 "\"leftMargin\": \"50\"," +
@@ -196,15 +196,15 @@ public class SimpleEscpTest {
                 "\"Margin 70,50,10: 1234567890.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printInRomanTypeface() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"typeface\": \"roman\"" +
             "}," +
@@ -212,15 +212,15 @@ public class SimpleEscpTest {
                 "\"printInRomanTypeface: This should be in roman typeface.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printInSansSerifTypeface() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"pageFormat\": {" +
                 "\"typeface\": \"sans-serif\"" +
             "}," +
@@ -228,73 +228,73 @@ public class SimpleEscpTest {
                 "\"printInRomanTypeface: This should be in sans-serif typeface.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printBold() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"template\": [" +
                 "\"bold: Normal %{BOLD}bold%{BOLD} normal.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printItalic() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"template\": [" +
                 "\"italic: Normal %{ITALIC}italic%{ITALIC} normal.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printDoubleStrike() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"template\": [" +
                 "\"strike: Normal %{DOUBLE}double strike%{DOUBLE} normal.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printUnderline() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"template\": [" +
                 "\"underline: Normal %{UNDERLINE}part with underline%{UNDERLINE} normal.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }
 
     @Test
     public void printSuperscriptAndSubscript() {
-        SimpleEscp simpleEscp = new SimpleEscp();
-        String json = "{" +
+        final SimpleEscp simpleEscp = new SimpleEscp();
+        final String json = "{" +
             "\"template\": [" +
                 "\"superscript: Normal %{SUPER}part with superscript%{SUPER} normal.\"," +
                 "\"subscript: Normal %{SUB}part with subscript%{SUB} normal.\"" +
             "]" +
         "}";
-        Template template = new JsonTemplate(json);
+        final Template template = new JsonTemplate(json);
         template.getPageFormat().setAutoFormFeed(false);
         simpleEscp.print(template, null, null);
     }

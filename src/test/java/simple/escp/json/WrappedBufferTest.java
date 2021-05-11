@@ -1,17 +1,10 @@
 package simple.escp.json;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import simple.escp.data.DataSource;
-import simple.escp.data.DataSources;
-import simple.escp.dom.Report;
-import simple.escp.dom.line.TableLine;
-import simple.escp.dom.line.TextLine;
-import simple.escp.fill.DataSourceBinding;
-import simple.escp.fill.TableFillHelper;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -19,28 +12,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import simple.escp.data.DataSource;
+import simple.escp.data.DataSources;
+import simple.escp.dom.Report;
+import simple.escp.dom.line.TableLine;
+import simple.escp.dom.line.TextLine;
+import simple.escp.fill.DataSourceBinding;
+import simple.escp.fill.TableFillHelper;
+
 public class WrappedBufferTest {
 
     private TableFillHelper.WrappedBuffer wrappedBuffer;
     private Report generatedReport;
 
-    @Before
+    @BeforeAll
     public void setup() throws URISyntaxException, IOException {
-        JsonTemplate jsonTemplate = new JsonTemplate(getClass().getResource("/single_table_wrap.json").toURI());
-        List<JsonTemplateFillTest.Person> persons = new ArrayList<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(getClass().getResource("/single_table_wrap.json").toURI());
+        final List<JsonTemplateFillTest.Person> persons = new ArrayList<>();
         persons.add(new JsonTemplateFillTest.Person("None12345678901234567890", "David12345678901234567890", "None12345678901234567890"));
         persons.add(new JsonTemplateFillTest.Person("David12345678901234567890", "Solid", "Snake12345678901234567890"));
         persons.add(new JsonTemplateFillTest.Person("Snake12345678901234567890", "Jocki", "Hendry12345678901234567890"));
-        Map<String, Object> source = new HashMap<>();
+        final Map<String, Object> source = new HashMap<>();
         source.put("persons", persons);
-        DataSource ds = DataSources.from(source);
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        final DataSource ds = DataSources.from(source);
+        final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         scriptEngineManager.setBindings(new DataSourceBinding(new DataSource[]{ds}));
-        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("JavaScript");
-        Report report = jsonTemplate.parse();
+        final ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("JavaScript");
+        final Report report = jsonTemplate.parse();
         generatedReport = new Report(3, null, null);
-        TableLine tableLine = report.getFirstPageWithTableLines().getTableLines().get(0);
-        TableFillHelper tableFillHelper = new TableFillHelper(generatedReport, scriptEngine, tableLine, persons);
+        final TableLine tableLine = report.getFirstPageWithTableLines().getTableLines().get(0);
+        final TableFillHelper tableFillHelper = new TableFillHelper(generatedReport, scriptEngine, tableLine, persons);
         wrappedBuffer = tableFillHelper.getWrappedBuffer();
     }
 
@@ -62,7 +69,7 @@ public class WrappedBufferTest {
 
     @Test
     public void add() {
-        String result = wrappedBuffer.add(0, "123456789012345");
+        final String result = wrappedBuffer.add(0, "123456789012345");
         assertEquals("1234567890", result);
         assertEquals("12345", wrappedBuffer.getBuffer(0));
     }

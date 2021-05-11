@@ -15,19 +15,19 @@
  */
 
 package simple.escp;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import simple.escp.dom.PageFormat;
-
-import static org.junit.Assert.*;
 
 public class PageFormatTest {
 
     @Test
     public void pageFormatLineSpacing() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setLineSpacing("1/8");
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(4, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));
@@ -37,9 +37,9 @@ public class PageFormatTest {
 
     @Test
     public void pageFormatCharacterPitch() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setCharacterPitch("17");
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(5, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));
@@ -50,10 +50,10 @@ public class PageFormatTest {
 
     @Test
     public void pageFormatPageLength() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setPageLength(10);
         pageFormat.setUsePrinterPageLength(false);
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(5, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));
@@ -64,10 +64,10 @@ public class PageFormatTest {
 
     @Test
     public void usePrinterPageLength() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setPageLength(10);
         pageFormat.setUsePrinterPageLength(true);
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(2, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));
@@ -75,9 +75,9 @@ public class PageFormatTest {
 
     @Test
     public void pageFormatPageWidth() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setPageWidth(40);
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(5, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));
@@ -88,11 +88,11 @@ public class PageFormatTest {
 
     @Test
     public void pageFormatLeftAndRightMargin() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setPageWidth(80);
         pageFormat.setLeftMargin(5);
         pageFormat.setRightMargin(10);
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(8, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));
@@ -106,9 +106,9 @@ public class PageFormatTest {
 
     @Test
     public void pageFormatButtonMargin() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setBottomMargin(80);
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(5, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));
@@ -119,9 +119,9 @@ public class PageFormatTest {
 
     @Test
     public void pageFormatTypefaceRoman() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setTypeface("roman");
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(5, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));
@@ -132,9 +132,9 @@ public class PageFormatTest {
 
     @Test
     public void pageFormatTypefaceSansSerif() {
-        PageFormat pageFormat = new PageFormat();
+        final PageFormat pageFormat = new PageFormat();
         pageFormat.setTypeface("sans-serif");
-        String result = pageFormat.build();
+        final String result = pageFormat.build();
         assertEquals(5, result.length());
         assertEquals((char) 27, result.charAt(0));
         assertEquals('@', result.charAt(1));

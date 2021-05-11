@@ -15,10 +15,8 @@
  */
 
 package simple.escp.placeholder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
-import simple.escp.data.DataSource;
-import simple.escp.data.DataSources;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -30,14 +28,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import simple.escp.data.DataSource;
+import simple.escp.data.DataSources;
 
 public class BasicPlaceholderTest {
 
     @Test
     public void getText() {
-        String text = "@takeHomePay";
-        BasicPlaceholder placeholder = new BasicPlaceholder(text);
+        final String text = "@takeHomePay";
+        final BasicPlaceholder placeholder = new BasicPlaceholder(text);
         assertEquals("@takeHomePay", placeholder.getText());
     }
 
@@ -98,13 +99,13 @@ public class BasicPlaceholderTest {
 
     @Test
     public void formattedValueSum() {
-        List<Integer> data = new ArrayList<>();
+        final List<Integer> data = new ArrayList<>();
         data.add(10);
         data.add(20);
         data.add(30);
         assertEquals(new BigDecimal("60.0"), new BasicPlaceholder("total:sum").getFormatted(data));
 
-        List<BigDecimal> data2 = new ArrayList<>();
+        final List<BigDecimal> data2 = new ArrayList<>();
         data2.add(new BigDecimal("10.25"));
         data2.add(new BigDecimal("20.75"));
         assertEquals(NumberFormat.getCurrencyInstance().format(31), new BasicPlaceholder("total:sum:currency").getFormatted(data2));
@@ -112,13 +113,13 @@ public class BasicPlaceholderTest {
 
     @Test
     public void formattedValueCount() {
-        List<Integer> data = new ArrayList<>();
+        final List<Integer> data = new ArrayList<>();
         data.add(10);
         data.add(20);
         data.add(30);
         assertEquals(3, new BasicPlaceholder("total:count").getFormatted(data));
 
-        List<BigDecimal> data2 = new ArrayList<>();
+        final List<BigDecimal> data2 = new ArrayList<>();
         data2.add(new BigDecimal("10.25"));
         data2.add(new BigDecimal("20.75"));
         assertEquals(NumberFormat.getCurrencyInstance().format(2), new BasicPlaceholder("total:count:currency").getFormatted(data2));
@@ -140,11 +141,11 @@ public class BasicPlaceholderTest {
 
     @Test
     public void getValueAsStringFromMap() {
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("name", "Solid");
         map.put("rate", 5);
-        DataSource dataSource = DataSources.from(map);
-        DataSource[] dataSources = new DataSource[]{dataSource};
+        final DataSource dataSource = DataSources.from(map);
+        final DataSource[] dataSources = new DataSource[]{dataSource};
 
         Placeholder placeholder = new BasicPlaceholder("name:3");
         assertEquals("Sol", placeholder.getValueAsString(dataSources));

@@ -15,13 +15,11 @@
  */
 
 package simple.escp.json;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static simple.escp.util.EscpUtil.CR;
+import static simple.escp.util.EscpUtil.CRFF;
+import static simple.escp.util.EscpUtil.CRLF;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-import simple.escp.fill.FillJob;
-import simple.escp.data.MapDataSource;
-import simple.escp.util.EscpUtil;
-import static simple.escp.util.EscpUtil.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -29,17 +27,23 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.jupiter.api.Test;
+
+import simple.escp.data.MapDataSource;
+import simple.escp.fill.FillJob;
+import simple.escp.util.EscpUtil;
+
 public class JsonTemplateBasicTest {
 
     private final String INIT = EscpUtil.escInitalize();
 
     @Test
     public void parseString() {
-        String jsonString = "{\"template\": [" +
+        final String jsonString = "{\"template\": [" +
             "\"This is the first line\"," +
             "\"This is the second line\"" +
             "]}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         jsonTemplate.parse();
         assertEquals(jsonString, jsonTemplate.getOriginalText());
         assertEquals(INIT + "This is the first line" + CRLF + "This is the second line" + CRLF + CRFF + INIT,
@@ -48,7 +52,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatLineSpacing() {
-        String jsonString =
+        final String jsonString =
             "{" +
                 "\"pageFormat\": {" +
                     "\"lineSpacing\": \"1/8\"" +
@@ -57,8 +61,8 @@ public class JsonTemplateBasicTest {
                     "\"Your id is ${id}, Mr. ${nickname}.\"" +
                 "]" +
             "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -69,7 +73,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatCharacterPitch() {
-        String jsonString =
+        final String jsonString =
             "{" +
                 "\"pageFormat\": {" +
                     "\"characterPitch\": \"10\"" +
@@ -78,8 +82,8 @@ public class JsonTemplateBasicTest {
                     "\"Your id is ${id}, Mr. ${nickname}.\"" +
                 "]" +
             "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -90,7 +94,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatPageLengthInString() {
-        String jsonString =
+        final String jsonString =
             "{" +
                 "\"pageFormat\": {" +
                     "\"pageLength\": \"10\"," +
@@ -100,8 +104,8 @@ public class JsonTemplateBasicTest {
                     "\"Your id is ${id}, Mr. ${nickname}.\"" +
                 "]" +
             "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -112,7 +116,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatPageLengthInNumber() {
-        String jsonString =
+        final String jsonString =
             "{" +
                 "\"pageFormat\": {" +
                     "\"pageLength\": 10," +
@@ -122,8 +126,8 @@ public class JsonTemplateBasicTest {
                     "\"Your id is ${id}, Mr. ${nickname}.\"" +
                 "]" +
             "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -134,7 +138,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatPageWidth() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageWidth\": \"25\"" +
@@ -143,8 +147,8 @@ public class JsonTemplateBasicTest {
                 "\"Your id is ${id}, Mr. ${nickname}.\"" +
             "]" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -155,7 +159,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatLeftAndRightAndBottomMargin() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageWidth\": \"30\"," +
@@ -167,8 +171,8 @@ public class JsonTemplateBasicTest {
                 "\"Your id is ${id}, Mr. ${nickname}.\"" +
             "]" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -180,7 +184,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatTypeface() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"typeface\": \"sans-serif\"" +
@@ -189,8 +193,8 @@ public class JsonTemplateBasicTest {
                 "\"Your id is ${id}, Mr. ${nickname}.\"" +
             "]" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -202,7 +206,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatAutoLineFeed() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"autoLineFeed\": true" +
@@ -211,8 +215,8 @@ public class JsonTemplateBasicTest {
                 "\"Your id is ${id}, Mr. ${nickname}.\"" +
             "]" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -223,7 +227,7 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void pageFormatAutoFormFeed() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"autoFormFeed\": false" +
@@ -232,8 +236,8 @@ public class JsonTemplateBasicTest {
                 "\"Your id is ${id}, Mr. ${nickname}.\"" +
             "]" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Map<String, String> source = new HashMap<>();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Map<String, String> source = new HashMap<>();
         source.put("id", "007");
         source.put("nickname", "Snake");
         assertEquals(
@@ -244,9 +248,9 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void fromFile() throws IOException {
-        File file = Paths.get("src/test/resources/user.json").toFile();
-        JsonTemplate jsonTemplate = new JsonTemplate(file);
-        String LS = System.getProperty("line.separator");
+        final File file = Paths.get("src/test/resources/user.json").toFile();
+        final JsonTemplate jsonTemplate = new JsonTemplate(file);
+        final String LS = System.getProperty("line.separator");
         assertEquals("{" + LS +
             "    \"pageFormat\": {" + LS +
             "        \"pageLength\": 30," + LS +
@@ -260,10 +264,10 @@ public class JsonTemplateBasicTest {
             "    ]" + LS +
             "}", jsonTemplate.getOriginalText());
 
-        Map<String, String> data = new HashMap<>();
+        final Map<String, String> data = new HashMap<>();
         data.put("id", "007");
         data.put("nickname", "The Solid Snake");
-        String result = new FillJob(jsonTemplate.parse(), new MapDataSource(data)).fill();
+        final String result = new FillJob(jsonTemplate.parse(), new MapDataSource(data)).fill();
         assertEquals(
             EscpUtil.escInitalize() +
             "User Report" + CRLF +
@@ -277,8 +281,8 @@ public class JsonTemplateBasicTest {
 
     @Test
     public void fromURI() throws IOException, URISyntaxException {
-        JsonTemplate jsonTemplate = new JsonTemplate(getClass().getResource("/user.json").toURI());
-        String LS = System.getProperty("line.separator");
+        final JsonTemplate jsonTemplate = new JsonTemplate(getClass().getResource("/user.json").toURI());
+        final String LS = System.getProperty("line.separator");
         assertEquals("{" + LS +
                 "    \"pageFormat\": {" + LS +
                 "        \"pageLength\": 30," + LS +
@@ -292,10 +296,10 @@ public class JsonTemplateBasicTest {
                 "    ]" + LS +
                 "}", jsonTemplate.getOriginalText());
 
-        Map<String, String> data = new HashMap<>();
+        final Map<String, String> data = new HashMap<>();
         data.put("id", "007");
         data.put("nickname", "The Solid Snake");
-        String result = new FillJob(jsonTemplate.parse(), new MapDataSource(data)).fill();
+        final String result = new FillJob(jsonTemplate.parse(), new MapDataSource(data)).fill();
         assertEquals(
                 EscpUtil.escInitalize() +
                         "User Report" + CRLF +

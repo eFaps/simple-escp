@@ -1,18 +1,21 @@
 package simple.escp.json;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import simple.escp.dom.Page;
 import simple.escp.dom.Report;
 import simple.escp.dom.TableColumn;
 import simple.escp.dom.line.ListLine;
 import simple.escp.dom.line.TableLine;
-import static org.junit.Assert.*;
 
 public class ParserTest {
 
     @Test
     public void parseTable() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -31,10 +34,10 @@ public class ParserTest {
                 "\"This is line 2.\"" +
             "]" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Report report = jsonTemplate.parse();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Report report = jsonTemplate.parse();
         assertEquals(1, report.getNumberOfPages());
-        Page page = report.getPage(1);
+        final Page page = report.getPage(1);
         assertEquals(3, page.getNumberOfLines());
         assertEquals("This is line 1.", page.getLine(1).toString());
         assertFalse(page.getLine(1).isDynamic());
@@ -43,7 +46,7 @@ public class ParserTest {
         assertTrue(page.getLine(2).isDynamic());
         assertTrue(page.getLine(2) instanceof TableLine);
 
-        TableLine tableLine = (TableLine) page.getLine(2);
+        final TableLine tableLine = (TableLine) page.getLine(2);
         assertEquals("sources", tableLine.getSource());
         assertEquals(3, tableLine.getNumberOfColumns());
 
@@ -60,7 +63,7 @@ public class ParserTest {
 
     @Test
     public void parseTableInDetail() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -80,10 +83,10 @@ public class ParserTest {
             "}" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Report report = jsonTemplate.parse();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Report report = jsonTemplate.parse();
         assertEquals(1, report.getNumberOfPages());
-        Page page = report.getPage(1);
+        final Page page = report.getPage(1);
         assertEquals(3, page.getNumberOfLines());
         assertEquals("This is header.", page.getLine(1).toString());
         assertFalse(page.getLine(1).isDynamic());
@@ -92,7 +95,7 @@ public class ParserTest {
         assertTrue(page.getLine(2).isDynamic());
         assertTrue(page.getLine(2) instanceof TableLine);
 
-        TableLine tableLine = (TableLine) page.getLine(2);
+        final TableLine tableLine = (TableLine) page.getLine(2);
         assertEquals("sources", tableLine.getSource());
         assertEquals(3, tableLine.getNumberOfColumns());
 
@@ -112,7 +115,7 @@ public class ParserTest {
 
     @Test
     public void parseTableWithColumnCaption() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -131,10 +134,10 @@ public class ParserTest {
                 "\"footer\": [\"This is footer.\"]" +
             "}" +
         "}";
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Report report = jsonTemplate.parse();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Report report = jsonTemplate.parse();
         assertEquals(1, report.getNumberOfPages());
-        Page page = report.getPage(1);
+        final Page page = report.getPage(1);
         assertEquals(3, page.getNumberOfLines());
         assertEquals("This is header.", page.getLine(1).toString());
         assertFalse(page.getLine(1).isDynamic());
@@ -143,7 +146,7 @@ public class ParserTest {
         assertTrue(page.getLine(2).isDynamic());
         assertTrue(page.getLine(2) instanceof TableLine);
 
-        TableLine tableLine = (TableLine) page.getLine(2);
+        final TableLine tableLine = (TableLine) page.getLine(2);
         assertEquals("sources", tableLine.getSource());
         assertEquals(3, tableLine.getNumberOfColumns());
 
@@ -163,7 +166,7 @@ public class ParserTest {
 
     @Test
     public void parseListLine() {
-        String jsonString =
+        final String jsonString =
         "{" +
             "\"pageFormat\": {" +
                 "\"pageLength\": 3" +
@@ -188,10 +191,10 @@ public class ParserTest {
             "}" +
         "}";
 
-        JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        Report report = jsonTemplate.parse();
+        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+        final Report report = jsonTemplate.parse();
         assertEquals(1, report.getNumberOfPages());
-        Page page = report.getPage(1);
+        final Page page = report.getPage(1);
         assertEquals(3, page.getNumberOfLines());
         assertEquals("This is header.", page.getLine(1).toString());
         assertFalse(page.getLine(1).isDynamic());
@@ -200,7 +203,7 @@ public class ParserTest {
         assertTrue(page.getLine(2).isDynamic());
         assertTrue(page.getLine(2) instanceof ListLine);
 
-        ListLine listLine = (ListLine) page.getLine(2);
+        final ListLine listLine = (ListLine) page.getLine(2);
         assertEquals("sources", listLine.getSource());
         assertEquals("${field1} + ${field2} = ${field3}", listLine.getLineSource());
         assertEquals(2, listLine.getHeader().length);

@@ -1,19 +1,23 @@
 package simple.escp.data;
 
-import org.junit.Before;
-import org.junit.Test;
-import javax.json.JsonObject;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import javax.json.JsonObject;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class JsonDataSourceTest {
 
     private String jsonString;
 
-    @Before
+    @BeforeAll
     public void setup() {
         jsonString = "{" +
             "\"name\": \"Steven\"," +
@@ -33,7 +37,7 @@ public class JsonDataSourceTest {
 
     @Test
     public void hasMember() {
-        JsonDataSource ds  = new JsonDataSource(jsonString);
+        final JsonDataSource ds  = new JsonDataSource(jsonString);
         assertTrue(ds.has("name"));
         assertTrue(ds.has("age"));
         assertTrue(ds.has("registered"));
@@ -44,7 +48,7 @@ public class JsonDataSourceTest {
 
     @Test
     public void getMember() {
-        JsonDataSource ds  = new JsonDataSource(jsonString);
+        final JsonDataSource ds  = new JsonDataSource(jsonString);
         assertEquals("Steven", ds.get("name"));
         assertEquals(new BigDecimal("28"), ds.get("age"));
         assertEquals(true, ds.get("registered"));
@@ -55,8 +59,8 @@ public class JsonDataSourceTest {
 
     @Test
     public void getMembers() {
-        JsonDataSource ds = new JsonDataSource(jsonString);
-        List<String> result = Arrays.asList(ds.getMembers());
+        final JsonDataSource ds = new JsonDataSource(jsonString);
+        final List<String> result = Arrays.asList(ds.getMembers());
         assertTrue(result.contains("name"));
         assertTrue(result.contains("age"));
         assertTrue(result.contains("registered"));

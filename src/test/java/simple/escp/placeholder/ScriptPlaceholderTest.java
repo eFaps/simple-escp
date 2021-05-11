@@ -1,25 +1,28 @@
 package simple.escp.placeholder;
 
-import org.junit.Test;
-import simple.escp.data.DataSources;
-import simple.escp.fill.DataSourceBinding;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.Assert.*;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
+import org.junit.jupiter.api.Test;
+
+import simple.escp.data.DataSources;
+import simple.escp.fill.DataSourceBinding;
 
 public class ScriptPlaceholderTest {
 
     @Test
     public void getText() {
-        String text = "rate * 0.5 :: number :: 10";
-        ScriptPlaceholder placeholder = new ScriptPlaceholder(text, null);
+        final String text = "rate * 0.5 :: number :: 10";
+        final ScriptPlaceholder placeholder = new ScriptPlaceholder(text, null);
         assertEquals("rate * 0.5 :: number :: 10", placeholder.getText());
     }
 
@@ -64,13 +67,13 @@ public class ScriptPlaceholderTest {
 
     @Test
     public void formattedValueSum() {
-        List<Integer> data = new ArrayList<>();
+        final List<Integer> data = new ArrayList<>();
         data.add(10);
         data.add(20);
         data.add(30);
         assertEquals(new BigDecimal("60.0"), new BasicPlaceholder("total::sum").getFormatted(data));
 
-        List<BigDecimal> data2 = new ArrayList<>();
+        final List<BigDecimal> data2 = new ArrayList<>();
         data2.add(new BigDecimal("10.25"));
         data2.add(new BigDecimal("20.75"));
         assertEquals(NumberFormat.getCurrencyInstance().format(31), new BasicPlaceholder("total::sum::currency").getFormatted(data2));
@@ -78,13 +81,13 @@ public class ScriptPlaceholderTest {
 
     @Test
     public void formattedValueCount() {
-        List<Integer> data = new ArrayList<>();
+        final List<Integer> data = new ArrayList<>();
         data.add(10);
         data.add(20);
         data.add(30);
         assertEquals(3, new BasicPlaceholder("total::count").getFormatted(data));
 
-        List<BigDecimal> data2 = new ArrayList<>();
+        final List<BigDecimal> data2 = new ArrayList<>();
         data2.add(new BigDecimal("10.25"));
         data2.add(new BigDecimal("20.75"));
         assertEquals(NumberFormat.getCurrencyInstance().format(2), new BasicPlaceholder("total::count::currency").getFormatted(data2));
@@ -92,10 +95,10 @@ public class ScriptPlaceholderTest {
 
     @Test
     public void getNullValue() {
-        Student student = new Student("student");
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        final Student student = new Student("student");
+        final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         scriptEngineManager.setBindings(new DataSourceBinding(DataSources.from(new Object[]{student})));
-        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("JavaScript");
+        final ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("JavaScript");
 
         ScriptPlaceholder placeholder = new ScriptPlaceholder("bean.name", scriptEngine);
         assertEquals("student", placeholder.getValueAsString(null));
@@ -117,7 +120,7 @@ public class ScriptPlaceholderTest {
 
         private String name;
 
-        public Student(String name) {
+        public Student(final String name) {
             this.name = name;
         }
 
@@ -125,7 +128,7 @@ public class ScriptPlaceholderTest {
             return name;
         }
 
-        public void setName(String name) {
+        public void setName(final String name) {
             this.name = name;
         }
 
