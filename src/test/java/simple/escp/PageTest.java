@@ -1,9 +1,9 @@
 package simple.escp;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static simple.escp.util.EscpUtil.CR;
 import static simple.escp.util.EscpUtil.CRFF;
@@ -20,10 +20,13 @@ import simple.escp.dom.line.EmptyLine;
 import simple.escp.dom.line.ListLine;
 import simple.escp.dom.line.TableLine;
 import simple.escp.dom.line.TextLine;
-public class PageTest {
+
+public class PageTest
+{
 
     @Test
-    public void append() {
+    public void append()
+    {
         final List<Line> content = new ArrayList<>();
         final Page page = new Page(content, null, null, 1, 3);
         page.append("This is line 1");
@@ -41,28 +44,35 @@ public class PageTest {
 
     }
 
-    //@Test(expected = IllegalStateException.class)
-    public void appendFull() {
-        final List<Line> content = new ArrayList<>();
-        final Page page = new Page(content, null, null, 1, 3);
-        page.append("This is line 1");
-        page.append("This is line 2");
-        page.append("This is line 3");
-        page.append("This is line 4");
-    }
-
-    //@Test(expected = IllegalStateException.class)
-    public void appendFullWithHeaderAndFooter() {
-        final List<Line> content = new ArrayList<>();
-        final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
-        final TextLine[] footer = new TextLine[] { new TextLine("This is footer 1") };
-        final Page page = new Page(content, header, footer, 1, 3);
-        page.append("This is line 1");
-        page.append("This is line 2");
+    @Test
+    public void appendFull()
+    {
+        assertThrows(IllegalStateException.class, () -> {
+            final List<Line> content = new ArrayList<>();
+            final Page page = new Page(content, null, null, 1, 3);
+            page.append("This is line 1");
+            page.append("This is line 2");
+            page.append("This is line 3");
+            page.append("This is line 4");
+        });
     }
 
     @Test
-    public void getWithHeaderAndFooter() {
+    public void appendFullWithHeaderAndFooter()
+    {
+        assertThrows(IllegalStateException.class, () -> {
+            final List<Line> content = new ArrayList<>();
+            final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
+            final TextLine[] footer = new TextLine[] { new TextLine("This is footer 1") };
+            final Page page = new Page(content, header, footer, 1, 3);
+            page.append("This is line 1");
+            page.append("This is line 2");
+        });
+    }
+
+    @Test
+    public void getWithHeaderAndFooter()
+    {
         final List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content"));
         final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
@@ -73,9 +83,9 @@ public class PageTest {
         assertEquals("This is footer 1", page.getLine(3).toString());
     }
 
-
     @Test
-    public void getNumberOfLines() {
+    public void getNumberOfLines()
+    {
         // With content only
         List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content"));
@@ -92,7 +102,8 @@ public class PageTest {
     }
 
     @Test
-    public void getLines() {
+    public void getLines()
+    {
         // With content only
         List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content"));
@@ -116,20 +127,22 @@ public class PageTest {
     }
 
     @Test
-    public void convertToString() {
+    public void convertToString()
+    {
         final List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content"));
         final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
         final TextLine[] footer = new TextLine[] { new TextLine("This is footer 1") };
         final Page page = new Page(content, header, footer, 1, 3);
         assertEquals("This is header 1" + CRLF + "This is content" + CRLF + "This is footer 1" + CRLF + CRFF,
-            page.convertToString(false, true));
+                        page.convertToString(false, true));
         assertEquals("This is header 1" + CR + "This is content" + CR + "This is footer 1" + CR + CRFF,
-            page.convertToString(true, true));
+                        page.convertToString(true, true));
     }
 
     @Test
-    public void insert() {
+    public void insert()
+    {
         final List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content 1"));
         content.add(new TextLine("This is content 2"));
@@ -148,7 +161,8 @@ public class PageTest {
     }
 
     @Test
-    public void insertOverflow() {
+    public void insertOverflow()
+    {
         final List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content 1"));
         content.add(new TextLine("This is content 2"));
@@ -168,7 +182,8 @@ public class PageTest {
     }
 
     @Test
-    public void removeByObject() {
+    public void removeByObject()
+    {
         final List<Line> content = new ArrayList<>();
         final TextLine line1 = new TextLine("This is content 1");
         final TextLine line2 = new TextLine("This is content 2");
@@ -196,38 +211,45 @@ public class PageTest {
         assertFalse(page.removeLine(new TextLine("This is content 3")));
     }
 
-    //@Test(expected = IllegalArgumentException.class)
-    public void removeByLineNumberHeader() {
-        final List<Line> content = new ArrayList<>();
-        final TextLine line1 = new TextLine("This is content 1");
-        final TextLine line2 = new TextLine("This is content 2");
-        final TextLine line3 = new TextLine("This is content 3");
-        content.add(line1);
-        content.add(line2);
-        content.add(line3);
-        final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
-        final TextLine[] footer = new TextLine[] { new TextLine("This is footer 1") };
-        final Page page = new Page(content, header, footer, 1, 5);
-        page.removeLine(1);
-    }
-
-    //@Test(expected = IllegalArgumentException.class)
-    public void removeByLineNumberFooter() {
-        final List<Line> content = new ArrayList<>();
-        final TextLine line1 = new TextLine("This is content 1");
-        final TextLine line2 = new TextLine("This is content 2");
-        final TextLine line3 = new TextLine("This is content 3");
-        content.add(line1);
-        content.add(line2);
-        content.add(line3);
-        final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
-        final TextLine[] footer = new TextLine[] { new TextLine("This is footer 1") };
-        final Page page = new Page(content, header, footer, 1, 5);
-        page.removeLine(5);
+    @Test
+    public void removeByLineNumberHeader()
+    {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final List<Line> content = new ArrayList<>();
+            final TextLine line1 = new TextLine("This is content 1");
+            final TextLine line2 = new TextLine("This is content 2");
+            final TextLine line3 = new TextLine("This is content 3");
+            content.add(line1);
+            content.add(line2);
+            content.add(line3);
+            final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
+            final TextLine[] footer = new TextLine[] { new TextLine("This is footer 1") };
+            final Page page = new Page(content, header, footer, 1, 5);
+            page.removeLine(1);
+        });
     }
 
     @Test
-    public void removeByLineNumber() {
+    public void removeByLineNumberFooter()
+    {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final List<Line> content = new ArrayList<>();
+            final TextLine line1 = new TextLine("This is content 1");
+            final TextLine line2 = new TextLine("This is content 2");
+            final TextLine line3 = new TextLine("This is content 3");
+            content.add(line1);
+            content.add(line2);
+            content.add(line3);
+            final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
+            final TextLine[] footer = new TextLine[] { new TextLine("This is footer 1") };
+            final Page page = new Page(content, header, footer, 1, 5);
+            page.removeLine(5);
+        });
+    }
+
+    @Test
+    public void removeByLineNumber()
+    {
         final List<Line> content = new ArrayList<>();
         final TextLine line1 = new TextLine("This is content 1");
         final TextLine line2 = new TextLine("This is content 2");
@@ -245,7 +267,8 @@ public class PageTest {
     }
 
     @Test
-    public void hasDynamicLine() {
+    public void hasDynamicLine()
+    {
         final List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content 1"));
         final Page page = new Page(content, null, null, 1, 3);
@@ -255,7 +278,8 @@ public class PageTest {
     }
 
     @Test
-    public void getTableLines() {
+    public void getTableLines()
+    {
         final List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content 1"));
         final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
@@ -273,7 +297,8 @@ public class PageTest {
     }
 
     @Test
-    public void getListLines() {
+    public void getListLines()
+    {
         final List<Line> content = new ArrayList<>();
         content.add(new TextLine("This is content 1"));
         final TextLine[] header = new TextLine[] { new TextLine("This is header 1") };
@@ -291,7 +316,8 @@ public class PageTest {
     }
 
     @Test
-    public void appendEmptyLineUntil() {
+    public void appendEmptyLineUntil()
+    {
         List<Line> content = new ArrayList<>();
         final TextLine line1 = new TextLine("This is content 1");
         content.add(line1);
@@ -301,10 +327,10 @@ public class PageTest {
         page.appendEmptyLineUntil(4);
 
         assertEquals(2, page.getContent().size());
-        assertEquals("This is header 1", ((TextLine)page.getLine(1)).getText());
-        assertEquals("This is content 1", ((TextLine)page.getLine(2)).getText());
+        assertEquals("This is header 1", ((TextLine) page.getLine(1)).getText());
+        assertEquals("This is content 1", ((TextLine) page.getLine(2)).getText());
         assertEquals(EmptyLine.class, page.getLine(3).getClass());
-        assertEquals("This is footer 1", ((TextLine)page.getLine(4)).getText());
+        assertEquals("This is footer 1", ((TextLine) page.getLine(4)).getText());
 
         content = new ArrayList<>();
         header = new TextLine[] { new TextLine("This is header 1") };
@@ -313,14 +339,15 @@ public class PageTest {
         page.appendEmptyLineUntil(4);
 
         assertEquals(2, page.getContent().size());
-        assertEquals("This is header 1", ((TextLine)page.getLine(1)).getText());
+        assertEquals("This is header 1", ((TextLine) page.getLine(1)).getText());
         assertEquals(EmptyLine.class, page.getLine(2).getClass());
         assertEquals(EmptyLine.class, page.getLine(3).getClass());
-        assertEquals("This is footer 1", ((TextLine)page.getLine(4)).getText());
+        assertEquals("This is footer 1", ((TextLine) page.getLine(4)).getText());
     }
 
     @Test
-    public void setLine() {
+    public void setLine()
+    {
         final List<Line> content = new ArrayList<>();
         final TextLine line1 = new TextLine("This is content 1");
         final TextLine line2 = new TextLine("This is content 2");
@@ -338,15 +365,16 @@ public class PageTest {
         page.setLine(4, new TextLine("This is new content 3"));
         page.setLine(5, new TextLine("This is new footer"));
 
-        assertEquals("This is new header", ((TextLine)page.getLine(1)).getText());
-        assertEquals("This is new content 1", ((TextLine)page.getLine(2)).getText());
-        assertEquals("This is new content 2", ((TextLine)page.getLine(3)).getText());
-        assertEquals("This is new content 3", ((TextLine)page.getLine(4)).getText());
-        assertEquals("This is new footer", ((TextLine)page.getLine(5)).getText());
+        assertEquals("This is new header", ((TextLine) page.getLine(1)).getText());
+        assertEquals("This is new content 1", ((TextLine) page.getLine(2)).getText());
+        assertEquals("This is new content 2", ((TextLine) page.getLine(3)).getText());
+        assertEquals("This is new content 3", ((TextLine) page.getLine(4)).getText());
+        assertEquals("This is new footer", ((TextLine) page.getLine(5)).getText());
     }
 
     @Test
-    public void setLineWithoutHeaderAndFooter() {
+    public void setLineWithoutHeaderAndFooter()
+    {
         final List<Line> content = new ArrayList<>();
         final TextLine line1 = new TextLine("This is content 1");
         final TextLine line2 = new TextLine("This is content 2");
@@ -360,9 +388,9 @@ public class PageTest {
         page.setLine(2, new TextLine("This is new content 2"));
         page.setLine(3, new TextLine("This is new content 3"));
 
-        assertEquals("This is new content 1", ((TextLine)page.getLine(1)).getText());
-        assertEquals("This is new content 2", ((TextLine)page.getLine(2)).getText());
-        assertEquals("This is new content 3", ((TextLine)page.getLine(3)).getText());
+        assertEquals("This is new content 1", ((TextLine) page.getLine(1)).getText());
+        assertEquals("This is new content 2", ((TextLine) page.getLine(2)).getText());
+        assertEquals("This is new content 3", ((TextLine) page.getLine(3)).getText());
     }
 
 }

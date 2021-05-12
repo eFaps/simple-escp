@@ -1,8 +1,8 @@
 package simple.escp.data;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.beans.MethodDescriptor;
@@ -12,10 +12,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class BeanDataSourceTest {
+import simple.escp.exception.InvalidPlaceholder;
+
+public class BeanDataSourceTest
+{
 
     @Test
-    public void getMethod() {
+    public void getMethod()
+    {
         final Employee emp = new Employee("test", 10.0, 24.0);
         final BeanDataSource ds = new BeanDataSource(emp);
         final MethodDescriptor md = ds.getMethod("grossIncome");
@@ -23,7 +27,8 @@ public class BeanDataSourceTest {
     }
 
     @Test
-    public void getProperty() {
+    public void getProperty()
+    {
         final Employee emp = new Employee("test", 10.0, 24.0);
         final BeanDataSource ds = new BeanDataSource(emp);
         PropertyDescriptor pd = ds.getProperty("name");
@@ -35,7 +40,8 @@ public class BeanDataSourceTest {
     }
 
     @Test
-    public void hasMember() {
+    public void hasMember()
+    {
         final Employee emp = new Employee("test", 10.0, 24.0);
         final BeanDataSource ds = new BeanDataSource(emp);
         assertTrue(ds.has("name"));
@@ -47,7 +53,8 @@ public class BeanDataSourceTest {
     }
 
     @Test
-    public void getMember() {
+    public void getMember()
+    {
         final Employee emp = new Employee("test", 10.0, 24.0);
         final BeanDataSource ds = new BeanDataSource(emp);
         assertEquals("test", ds.get("name"));
@@ -56,7 +63,8 @@ public class BeanDataSourceTest {
         assertEquals(240.0, ds.get("@grossIncome"));
     }
 
-    public void getMembers() {
+    public void getMembers()
+    {
         final Employee emp = new Employee("test", 10.0, 24.0);
         final BeanDataSource ds = new BeanDataSource(emp);
         assertEquals(4, ds.getMembers().length);
@@ -67,22 +75,27 @@ public class BeanDataSourceTest {
         assertTrue(result.contains("address"));
     }
 
-    //@Test(expected = InvalidPlaceholder.class)
-    public void getInvalidMember() {
-        final Employee emp = new Employee("test", 10.0, 24.0);
-        final BeanDataSource ds = new BeanDataSource(emp);
-        ds.get("invalid");
+    @Test
+    public void getInvalidMember()
+    {
+        assertThrows(InvalidPlaceholder.class, () -> {
+            final Employee emp = new Employee("test", 10.0, 24.0);
+            final BeanDataSource ds = new BeanDataSource(emp);
+            ds.get("invalid");
+        });
     }
 
     @Test
-    public void getSource() {
+    public void getSource()
+    {
         final Employee emp = new Employee("test", 10.0, 24.0);
         final BeanDataSource ds = new BeanDataSource(emp);
         assertEquals(emp, ds.getSource());
     }
 
     @Test
-    public void nestedProperty() {
+    public void nestedProperty()
+    {
         final Employee emp = new Employee("test", 10.0, 24.0);
         final City city = new City("CA", "City");
         final Address address = new Address("Line1", "Line2", city);
@@ -97,7 +110,8 @@ public class BeanDataSourceTest {
     }
 
     @Test
-    public void nestedMethod() {
+    public void nestedMethod()
+    {
         final Employee emp = new Employee("test", 10.0, 24.0);
         final City city = new City("CA", "City");
         final Address address = new Address("Line1", "Line2", city);
@@ -108,119 +122,151 @@ public class BeanDataSourceTest {
         assertEquals("Line1 City", ds.get("address.@shortAddress"));
     }
 
-    public static class Employee {
+    public static class Employee
+    {
+
         private String name;
         private double hourRate;
         private double workHours;
         private Address address;
 
-        public Employee(final String name, final double hourRate, final double workHours) {
+        public Employee(final String name,
+                        final double hourRate,
+                        final double workHours)
+        {
             this.name = name;
             this.hourRate = hourRate;
             this.workHours = workHours;
         }
 
-        public String getName() {
+        public String getName()
+        {
             return name;
         }
 
-        public void setName(final String name) {
+        public void setName(final String name)
+        {
             this.name = name;
         }
 
-        public double getHourRate() {
+        public double getHourRate()
+        {
             return hourRate;
         }
 
-        public void setHourRate(final double hourRate) {
+        public void setHourRate(final double hourRate)
+        {
             this.hourRate = hourRate;
         }
 
-        public double getWorkHours() {
+        public double getWorkHours()
+        {
             return workHours;
         }
 
-        public void setWorkHours(final double workHours) {
+        public void setWorkHours(final double workHours)
+        {
             this.workHours = workHours;
         }
 
-        public Address getAddress() {
+        public Address getAddress()
+        {
             return address;
         }
 
-        public void setAddress(final Address address) {
+        public void setAddress(final Address address)
+        {
             this.address = address;
         }
 
-        public double grossIncome() {
+        public double grossIncome()
+        {
             return hourRate * workHours;
         }
     }
 
-    public static class Address {
+    public static class Address
+    {
 
         private String line1;
         private String line2;
         private City city;
 
-        public Address(final String line1, final String line2, final City city) {
+        public Address(final String line1,
+                       final String line2,
+                       final City city)
+        {
             this.line1 = line1;
             this.line2 = line2;
             this.city = city;
         }
 
-        public String getLine1() {
+        public String getLine1()
+        {
             return line1;
         }
 
-        public void setLine1(final String line1) {
+        public void setLine1(final String line1)
+        {
             this.line1 = line1;
         }
 
-        public String getLine2() {
+        public String getLine2()
+        {
             return line2;
         }
 
-        public void setLine2(final String line2) {
+        public void setLine2(final String line2)
+        {
             this.line2 = line2;
         }
 
-        public City getCity() {
+        public City getCity()
+        {
             return city;
         }
 
-        public void setCity(final City city) {
+        public void setCity(final City city)
+        {
             this.city = city;
         }
 
-        public String shortAddress() {
+        public String shortAddress()
+        {
             return line1 + " " + city.getName();
         }
     }
 
-    public static class City {
+    public static class City
+    {
 
         private String code;
         private String name;
 
-        public City(final String code, final String name) {
+        public City(final String code,
+                    final String name)
+        {
             this.code = code;
             this.name = name;
         }
 
-        public String getCode() {
+        public String getCode()
+        {
             return code;
         }
 
-        public void setCode(final String code) {
+        public void setCode(final String code)
+        {
             this.code = code;
         }
 
-        public String getName() {
+        public String getName()
+        {
             return name;
         }
 
-        public void setName(final String name) {
+        public void setName(final String name)
+        {
             this.name = name;
         }
     }

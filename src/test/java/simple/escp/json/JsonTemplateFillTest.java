@@ -17,6 +17,7 @@
 package simple.escp.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static simple.escp.util.EscpUtil.CP347_LIGHT_DOWN_HORIZONTAL;
 import static simple.escp.util.EscpUtil.CP347_LIGHT_DOWN_LEFT;
 import static simple.escp.util.EscpUtil.CP347_LIGHT_DOWN_RIGHT;
@@ -47,6 +48,7 @@ import simple.escp.data.DataSources;
 import simple.escp.data.MapDataSource;
 import simple.escp.dom.Report;
 import simple.escp.dom.line.TableLine;
+import simple.escp.exception.InvalidPlaceholder;
 import simple.escp.fill.FillJob;
 import simple.escp.util.EscpUtil;
 
@@ -649,30 +651,32 @@ public class JsonTemplateFillTest {
         );
     }
 
-   // @Test(expected = InvalidPlaceholder.class)
+    @Test
     public void fillEmptyTable2() {
-        final String jsonString =
-        "{" +
-            "\"pageFormat\": {" +
-                "\"pageLength\": 3" +
-            "}," +
-            "\"template\": [" +
-                "\"First Line\"," +
-                "{" +
-                    "\"table\": \"tables\"," +
-                    "\"columns\": [ {\"source\": \"test\", \"width\": 10} ]" +
+        assertThrows(InvalidPlaceholder.class, () -> {
+            final String jsonString =
+            "{" +
+                "\"pageFormat\": {" +
+                    "\"pageLength\": 3" +
                 "}," +
-                "\"Second Line\"" +
-            "]" +
-        "}";
-        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        final Map<String, String> source = new HashMap<>();
-        assertEquals( INIT +
-            "First Line" + CRLF +
-            "Second Line" + CRLF +
-            CRFF + INIT,
-            new FillJob(jsonTemplate.parse(), new MapDataSource(source)).fill()
-        );
+                "\"template\": [" +
+                    "\"First Line\"," +
+                    "{" +
+                        "\"table\": \"tables\"," +
+                        "\"columns\": [ {\"source\": \"test\", \"width\": 10} ]" +
+                    "}," +
+                    "\"Second Line\"" +
+                "]" +
+            "}";
+            final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+            final Map<String, String> source = new HashMap<>();
+            assertEquals( INIT +
+                "First Line" + CRLF +
+                "Second Line" + CRLF +
+                CRFF + INIT,
+                new FillJob(jsonTemplate.parse(), new MapDataSource(source)).fill()
+            );
+        });
     }
 
     @Test

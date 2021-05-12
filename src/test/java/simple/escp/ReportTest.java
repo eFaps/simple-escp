@@ -4,6 +4,7 @@ package simple.escp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static simple.escp.util.EscpUtil.CRFF;
 import static simple.escp.util.EscpUtil.CRLF;
@@ -62,19 +63,21 @@ public class ReportTest {
         assertEquals(1, page.getNumberOfLines());
     }
 
-    //@Test(expected = IllegalArgumentException.class)
+    @Test
     public void appendFullPage() {
-        final PageFormat pageFormat = new PageFormat();
-        pageFormat.setPageLength(3);
-        final TextLine[] header = new TextLine[] { new TextLine("This is header.") };
-        final TextLine[] footer = new TextLine[] { new TextLine("This is footer.") };
-        final Report report = new Report(pageFormat, header, footer);
+        assertThrows(IllegalArgumentException.class, () -> {
+            final PageFormat pageFormat = new PageFormat();
+            pageFormat.setPageLength(3);
+            final TextLine[] header = new TextLine[] { new TextLine("This is header.") };
+            final TextLine[] footer = new TextLine[] { new TextLine("This is footer.") };
+            final Report report = new Report(pageFormat, header, footer);
 
-        final List<Line> content = new ArrayList<>();
-        content.add(new TextLine("This is detail 1."));
-        content.add(new TextLine("This is detail 2."));
-        content.add(new TextLine("This is detail 3."));
-        report.appendSinglePage(content, false);
+            final List<Line> content = new ArrayList<>();
+            content.add(new TextLine("This is detail 1."));
+            content.add(new TextLine("This is detail 2."));
+            content.add(new TextLine("This is detail 3."));
+            report.appendSinglePage(content, false);
+        });
     }
 
     @Test

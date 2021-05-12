@@ -1,8 +1,8 @@
 package simple.escp.data;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -12,10 +12,14 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-public class MapDataSourceTest {
+import simple.escp.exception.InvalidPlaceholder;
+
+public class MapDataSourceTest
+{
 
     @Test
-    public void hasMember() {
+    public void hasMember()
+    {
         final Map<String, String> source = new HashMap<>();
         source.put("name", "Solid Snake");
         final MapDataSource ds = new MapDataSource(source);
@@ -24,7 +28,8 @@ public class MapDataSourceTest {
     }
 
     @Test
-    public void getMember() {
+    public void getMember()
+    {
         final Map<String, String> source = new HashMap<>();
         source.put("name", "Solid Snake");
         final MapDataSource ds = new MapDataSource(source);
@@ -32,7 +37,8 @@ public class MapDataSourceTest {
     }
 
     @Test
-    public void getMembers() {
+    public void getMembers()
+    {
         final Map<String, String> source = new HashMap<>();
         source.put("name", "Solid Snake");
         source.put("firstName", "Solid");
@@ -45,16 +51,20 @@ public class MapDataSourceTest {
         assertTrue(result.contains("lastName"));
     }
 
-    //@Test(expected = InvalidPlaceholder.class)
-    public void getInvalidMember() {
-        final Map<String, String> source = new HashMap<>();
-        source.put("name", "Solid Snake");
-        final MapDataSource ds = new MapDataSource(source);
-        assertEquals("Solid Snake", ds.get("nickname"));
+    @Test
+    public void getInvalidMember()
+    {
+        assertThrows(InvalidPlaceholder.class, () -> {
+            final Map<String, String> source = new HashMap<>();
+            source.put("name", "Solid Snake");
+            final MapDataSource ds = new MapDataSource(source);
+            assertEquals("Solid Snake", ds.get("nickname"));
+        });
     }
 
     @Test
-    public void getSource() {
+    public void getSource()
+    {
         final Map<String, String> source = new HashMap<>();
         source.put("name", "Solid Snake");
         final MapDataSource ds = new MapDataSource(source);

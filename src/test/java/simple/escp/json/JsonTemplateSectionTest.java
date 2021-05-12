@@ -16,6 +16,7 @@
 
 package simple.escp.json;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static simple.escp.util.EscpUtil.CRFF;
 import static simple.escp.util.EscpUtil.CRLF;
 
@@ -32,19 +33,21 @@ public class JsonTemplateSectionTest {
 
     private final String INIT = EscpUtil.escInitalize();
 
-    //@Test(expected = IllegalArgumentException.class)
+    @Test
     public void parseNoPageLength() {
-        final String jsonString =
-        "{" +
-            "\"pageFormat\": {" +
-                "\"autoFormFeed\": false" +
-            "}," +
-            "\"template\": {" +
-                "\"detail\": [\"Your id is ${id}\",  \"Mr. ${nickname}.\"]" +
-            "}" +
-        "}";
-        final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
-        jsonTemplate.parse();
+        assertThrows(IllegalArgumentException.class, () -> {
+            final String jsonString =
+            "{" +
+                "\"pageFormat\": {" +
+                    "\"autoFormFeed\": false" +
+                "}," +
+                "\"template\": {" +
+                    "\"detail\": [\"Your id is ${id}\",  \"Mr. ${nickname}.\"]" +
+                "}" +
+            "}";
+            final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
+            jsonTemplate.parse();
+        });
     }
 
     @Test
