@@ -56,7 +56,7 @@ public class WrappedBufferWithBorderTest {
         final DataSource ds = DataSources.from(source);
         final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         scriptEngineManager.setBindings(new DataSourceBinding(new DataSource[]{ds}));
-        final ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("JavaScript");
+        final ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("groovy");
         final Report report = jsonTemplate.parse();
         generatedReport = new Report(3, null, null);
         final TableLine tableLine = report.getFirstPageWithTableLines().getTableLines().get(0);

@@ -15,9 +15,22 @@
  */
 package simple.escp.fill;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
+import simple.escp.data.DataSource;
 import simple.escp.dom.Page;
 import simple.escp.dom.Report;
-import simple.escp.data.DataSource;
 import simple.escp.fill.function.AsciiFunction;
 import simple.escp.fill.function.AutoIncrementFunction;
 import simple.escp.fill.function.BoldFunction;
@@ -34,17 +47,6 @@ import simple.escp.placeholder.BasicPlaceholder;
 import simple.escp.placeholder.Placeholder;
 import simple.escp.placeholder.ScriptPlaceholder;
 import simple.escp.util.EscpUtil;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * <code>FillJob</code> represent the process of filling a <code>Report</code> with one or more
@@ -112,16 +114,20 @@ public class FillJob {
         this.dataSources = Arrays.copyOf(dataSources, dataSources.length);
 
         // Create script engine for ScriptPlaceholder
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         scriptEngineManager.setBindings(new DataSourceBinding(this.dataSources));
         this.scriptEngine = scriptEngineManager.getEngineByName("groovy");
+        if (this.scriptEngine == null) {
+            LOG.fine("Can't find Groovy script engine, will use graal.js script engine.");
+            this.scriptEngine = scriptEngineManager.getEngineByName("graal.js");
+        }
         if (this.scriptEngine == null) {
             LOG.fine("Can't find Groovy script engine, will use JavaScript script engine.");
             this.scriptEngine = scriptEngineManager.getEngineByName("JavaScript");
         }
 
         // Reset functions
-        for (Function function : FUNCTIONS) {
+        for (final Function function : FUNCTIONS) {
             function.reset();
         }
     }
@@ -211,10 +217,10 @@ public class FillJob {
      * @return source with placeholders replaced by actual value.
      */
     protected String fillBasicPlaceholder(String text) {
-        StringBuffer result = new StringBuffer();
-        Matcher matcher = BASIC_PLACEHOLDER_PATTERN.matcher(text);
+        final StringBuffer result = new StringBuffer();
+        final Matcher matcher = BASIC_PLACEHOLDER_PATTERN.matcher(text);
         while (matcher.find()) {
-            String placeholderText = matcher.group(1);
+            final String placeholderText = matcher.group(1);
             LOG.fine("Found basic placeholder text [" + placeholderText + "]");
             Placeholder placeholder = placeholders.get(placeholderText);
             if (placeholder == null) {
@@ -234,10 +240,10 @@ public class FillJob {
      * @return source with placeholders replaced by actual value.
      */
     protected String fillScriptPlaceholder(String text) {
-        StringBuffer result = new StringBuffer();
-        Matcher matcher = SCRIPT_PLACEHOLDER_PATTERN.matcher(text);
+        final StringBuffer result = new StringBuffer();
+        final Matcher matcher = SCRIPT_PLACEHOLDER_PATTERN.matcher(text);
         while (matcher.find()) {
-            String placeholderText = matcher.group(1);
+            final String placeholderText = matcher.group(1);
             LOG.fine("Found script placeholder text [" + placeholderText + "]");
             Placeholder placeholder = placeholders.get(placeholderText);
             if (placeholder == null) {
@@ -258,19 +264,19 @@ public class FillJob {
      * @return a <code>String</code> that may contains ESC/P commands and can be printed.
      */
     public String fill() {
-        Report parsedReport = new Report(report);
+        final Report parsedReport = new Report(report);
 
         // Second phase: fill dynamic line, change last page footer, etc.
         if (parsedReport.hasDynamicLine()) {
             LOG.fine("This report has dynamic line.");
-            TableFillJob tableFillJob = new TableFillJob(parsedReport, dataSources);
-            ListFillJob listFillJob = new ListFillJob(parsedReport, dataSources);
+            final TableFillJob tableFillJob = new TableFillJob(parsedReport, dataSources);
+            final ListFillJob listFillJob = new ListFillJob(parsedReport, dataSources);
             tableFillJob.fill();
             listFillJob.fill();
         }
-        int lastPageFooterLength = parsedReport.getLastPageFooter().length;
+        final int lastPageFooterLength = parsedReport.getLastPageFooter().length;
         if (lastPageFooterLength > 0) {
-            Page lastPage = parsedReport.getPage(parsedReport.getLastPageNumber());
+            final Page lastPage = parsedReport.getPage(parsedReport.getLastPageNumber());
             lastPage.setFooter(parsedReport.getLastPageFooter());
             if (lastPage.isOverflow()) {
                 lastPage.setFooter(parsedReport.getFooter());
@@ -278,19 +284,19 @@ public class FillJob {
             }
         }
 
-        StringBuilder result = new StringBuilder();
-        boolean isAutoLineFeed = parsedReport.getPageFormat().isAutoLineFeed();
-        boolean isAutoFormFeed = parsedReport.getPageFormat().isAutoFormFeed();
+        final StringBuilder result = new StringBuilder();
+        final boolean isAutoLineFeed = parsedReport.getPageFormat().isAutoLineFeed();
+        final boolean isAutoFormFeed = parsedReport.getPageFormat().isAutoFormFeed();
         result.append(parsedReport.getPageFormat().build());
 
         // process functions
-        for (Function function : FUNCTIONS) {
+        for (final Function function : FUNCTIONS) {
             LOG.fine("Executing function [" + function + "]");
             function.process(parsedReport);
         }
 
         // process placeholders
-        for (Page page : parsedReport) {
+        for (final Page page : parsedReport) {
             String pageText = page.convertToString(isAutoLineFeed, isAutoFormFeed);
             pageText = fillBasicPlaceholder(pageText);
             pageText = fillScriptPlaceholder(pageText);
@@ -303,5 +309,5 @@ public class FillJob {
         result.append(EscpUtil.escInitalize());
         return result.toString();
     }
-    
+
 }

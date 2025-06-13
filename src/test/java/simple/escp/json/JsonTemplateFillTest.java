@@ -60,21 +60,24 @@ public class JsonTemplateFillTest {
 
     @BeforeEach
     public void setup() {
-        jsonStringBasic = "{" +
-            "\"template\": [" +
-                "\"Your id is ${id}, Mr. ${nickname}.\"" +
-            "]" +
-        "}";
-        jsonStringScriptMap = "{" +
-            "\"template\": [" +
-                "\"Your id is {{ id }}, Mr. {{ nickname }}.\"" +
-            "]" +
-        "}";
-        jsonStringScriptBean = "{" +
-            "\"template\": [" +
-                "\"Your id is {{ bean.id }}, Mr. {{ bean.nickname }}.\"" +
-            "]" +
-        "}";
+        jsonStringBasic = """
+            {\
+            "template": [\
+            "Your id is ${id}, Mr. ${nickname}."\
+            ]\
+            }""";
+        jsonStringScriptMap = """
+            {\
+            "template": [\
+            "Your id is {{ id }}, Mr. {{ nickname }}."\
+            ]\
+            }""";
+        jsonStringScriptBean = """
+            {\
+            "template": [\
+            "Your id is {{ bean.id }}, Mr. {{ bean.nickname }}."\
+            ]\
+            }""";
     }
 
     @Test
@@ -107,12 +110,13 @@ public class JsonTemplateFillTest {
     @Test
     public void fillObjectWithMethod() {
         final String jsonString =
-        "{" +
-            "\"template\": [" +
-                "\"Your first name is ${ firstName } and your last name is ${lastName}.\"," +
-                "\"I know you, ${@name}!\"" +
-            "]" +
-        "}";
+        """
+            {\
+            "template": [\
+            "Your first name is ${ firstName } and your last name is ${lastName}.",\
+            "I know you, ${@name}!"\
+            ]\
+            }""";
         JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         final Person person = new Person("Snake", "David", "None");
         assertEquals(INIT + "Your first name is David and your last name is None." + CRLF +
@@ -120,12 +124,13 @@ public class JsonTemplateFillTest {
             new FillJob(jsonTemplate.parse(), new BeanDataSource(person)).fill());
 
         final String jsonStringScript =
-        "{" +
-            "\"template\": [" +
-                "\"Your first name is {{ firstName }} and your last name is {{ lastName }}.\"," +
-                "\"I know you, {{ bean.name() }}!\"" +
-            "]" +
-        "}";
+        """
+            {\
+            "template": [\
+            "Your first name is {{ firstName }} and your last name is {{ lastName }}.",\
+            "I know you, {{ bean.name() }}!"\
+            ]\
+            }""";
         jsonTemplate = new JsonTemplate(jsonStringScript);
         assertEquals(INIT + "Your first name is David and your last name is None." + CRLF +
             "I know you, David None alias Snake!" + CRLF + CRFF + INIT,
@@ -560,11 +565,12 @@ public class JsonTemplateFillTest {
     @Test
     public void placeholderFormatting() {
          final String jsonString =
-        "{" +
-            "\"template\": [" +
-                "\"Your first name is ${firstName:10} and your last name is ${lastName:5}.\"" +
-            "]" +
-        "}";
+        """
+            {\
+            "template": [\
+            "Your first name is ${firstName:10} and your last name is ${lastName:5}."\
+            ]\
+            }""";
         final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         final Map<String, Object> source = new HashMap<>();
         source.put("firstName", "Jocki");
@@ -581,11 +587,12 @@ public class JsonTemplateFillTest {
     @Test
     public void placeholderFormattingForScript() {
         final String jsonString =
-        "{" +
-            "\"template\": [" +
-                "\"Your first name is {{firstName::10}} and your last name is {{lastName::5}}.\"" +
-            "]" +
-        "}";
+        """
+            {\
+            "template": [\
+            "Your first name is {{firstName::10}} and your last name is {{lastName::5}}."\
+            ]\
+            }""";
         final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         final Map<String, Object> source = new HashMap<>();
         source.put("firstName", "Jocki");
@@ -602,11 +609,12 @@ public class JsonTemplateFillTest {
     @Test
     public void customVariable() {
         final String jsonString =
-        "{" +
-            "\"template\": [" +
-                "\"Your first name is {{firstName}} {{custom}}.\"" +
-            "]" +
-        "}";
+        """
+            {\
+            "template": [\
+            "Your first name is {{firstName}} {{custom}}."\
+            ]\
+            }""";
         final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         final Map<String, Object> source = new HashMap<>();
         source.put("firstName", "Jocki");
@@ -626,19 +634,20 @@ public class JsonTemplateFillTest {
     @Test
     public void fillEmptyTable() {
         final String jsonString =
-        "{" +
-            "\"pageFormat\": {" +
-                "\"pageLength\": 3" +
-            "}," +
-            "\"template\": [" +
-                "\"First Line\"," +
-                "{" +
-                    "\"table\": \"tables\"," +
-                    "\"columns\": [ {\"source\": \"test\", \"width\": 10} ]" +
-                "}," +
-                "\"Second Line\"" +
-            "]" +
-        "}";
+        """
+            {\
+            "pageFormat": {\
+            "pageLength": 3\
+            },\
+            "template": [\
+            "First Line",\
+            {\
+            "table": "tables",\
+            "columns": [ {"source": "test", "width": 10} ]\
+            },\
+            "Second Line"\
+            ]\
+            }""";
         final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         final Map<String, String> source = new HashMap<>();
         source.put("tables", null);
@@ -654,19 +663,20 @@ public class JsonTemplateFillTest {
     public void fillEmptyTable2() {
         assertThrows(InvalidPlaceholder.class, () -> {
             final String jsonString =
-            "{" +
-                "\"pageFormat\": {" +
-                    "\"pageLength\": 3" +
-                "}," +
-                "\"template\": [" +
-                    "\"First Line\"," +
-                    "{" +
-                        "\"table\": \"tables\"," +
-                        "\"columns\": [ {\"source\": \"test\", \"width\": 10} ]" +
-                    "}," +
-                    "\"Second Line\"" +
-                "]" +
-            "}";
+            """
+                {\
+                "pageFormat": {\
+                "pageLength": 3\
+                },\
+                "template": [\
+                "First Line",\
+                {\
+                "table": "tables",\
+                "columns": [ {"source": "test", "width": 10} ]\
+                },\
+                "Second Line"\
+                ]\
+                }""";
             final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
             final Map<String, String> source = new HashMap<>();
             assertEquals( INIT +
@@ -681,19 +691,20 @@ public class JsonTemplateFillTest {
     @Test
     public void fillEmptyList() {
         final String jsonString =
-        "{" +
-            "\"pageFormat\": {" +
-                "\"pageLength\": 3" +
-            "}," +
-            "\"template\": [" +
-                "\"First Line\"," +
-                "{" +
-                    "\"list\": \"lists\"," +
-                    "\"line\": \"This is ${line}\"" +
-                "}," +
-                "\"Second Line\"" +
-            "]" +
-        "}";
+        """
+            {\
+            "pageFormat": {\
+            "pageLength": 3\
+            },\
+            "template": [\
+            "First Line",\
+            {\
+            "list": "lists",\
+            "line": "This is ${line}"\
+            },\
+            "Second Line"\
+            ]\
+            }""";
         final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         final Map<String, String> source = new HashMap<>();
         source.put("lists", null);
@@ -708,21 +719,22 @@ public class JsonTemplateFillTest {
     @Test
     public void fillEmptyListWithHeaderAndFooter() {
         final String jsonString =
-        "{" +
-            "\"pageFormat\": {" +
-                "\"pageLength\": 3" +
-            "}," +
-            "\"template\": [" +
-                "\"First Line\"," +
-                "{" +
-                    "\"list\": \"lists\"," +
-                    "\"line\": \"This is ${line}\"," +
-                    "\"header\": [ \"This is header\" ]," +
-                    "\"footer\": [ \"This is footer\" ]" +
-                "}," +
-                "\"Second Line\"" +
-            "]" +
-        "}";
+        """
+            {\
+            "pageFormat": {\
+            "pageLength": 3\
+            },\
+            "template": [\
+            "First Line",\
+            {\
+            "list": "lists",\
+            "line": "This is ${line}",\
+            "header": [ "This is header" ],\
+            "footer": [ "This is footer" ]\
+            },\
+            "Second Line"\
+            ]\
+            }""";
         final JsonTemplate jsonTemplate = new JsonTemplate(jsonString);
         final Map<String, String> source = new HashMap<>();
         source.put("lists", null);

@@ -113,7 +113,7 @@ public class ScriptPlaceholderTest {
         final Student student = new Student("student");
         final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         scriptEngineManager.setBindings(new DataSourceBinding(DataSources.from(new Object[]{student})));
-        final ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("JavaScript");
+        final ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("groovy");
 
         ScriptPlaceholder placeholder = new ScriptPlaceholder("bean.name", scriptEngine);
         assertEquals("student", placeholder.getValueAsString(null));
