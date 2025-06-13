@@ -15,13 +15,14 @@
  */
 package simple.escp.data;
 
-import javax.json.JsonObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import jakarta.json.JsonObject;
 
 /**
  * A factory class to create <code>DataSource</code>.
@@ -34,7 +35,7 @@ public abstract class DataSources {
     public static final List<DataSourceEntry> DATA_SOURCES;
 
     static {
-        List<DataSourceEntry> newDataSource = new ArrayList<>();
+        final List<DataSourceEntry> newDataSource = new ArrayList<>();
         newDataSource.add(new DataSourceEntry(Object.class, BeanDataSource.class));
         newDataSource.add(new DataSourceEntry(Map.class, MapDataSource.class));
         newDataSource.add(new DataSourceEntry(String.class, JsonDataSource.class));
@@ -59,7 +60,7 @@ public abstract class DataSources {
      * @param dataSourceType an implementation of <code>DataSource</code> that will be created by this entry.
      */
     public static void unregister(Class dataSourceType) {
-        for (DataSourceEntry entry : DATA_SOURCES.toArray(new DataSourceEntry[0])) {
+        for (final DataSourceEntry entry : DATA_SOURCES.toArray(new DataSourceEntry[0])) {
             if (entry.getDataSourceType().equals(dataSourceType)) {
                 DATA_SOURCES.remove(entry);
             }
@@ -79,7 +80,7 @@ public abstract class DataSources {
             return emptyDataSource;
         }
         for (int i = DATA_SOURCES.size() - 1; i >= 0; i--) {
-            DataSourceEntry dataSourceEntry = DATA_SOURCES.get(i);
+            final DataSourceEntry dataSourceEntry = DATA_SOURCES.get(i);
             if (dataSourceEntry.support(object)) {
                 return dataSourceEntry.create(object);
             }
@@ -97,8 +98,8 @@ public abstract class DataSources {
      * @return an array of implementation of <code>DataSource</code> in order of object's array.
      */
     public static DataSource[] from(Object[] objects) {
-        List<DataSource> sources = new ArrayList<>();
-        for (Object o : objects) {
+        final List<DataSource> sources = new ArrayList<>();
+        for (final Object o : objects) {
             sources.add(from(o));
         }
         return sources.toArray(new DataSource[0]);
@@ -120,8 +121,8 @@ public abstract class DataSources {
      */
     public static class DataSourceEntry {
 
-        private Class supportedType;
-        private Class dataSourceType;
+        private final Class supportedType;
+        private final Class dataSourceType;
 
         /**
          * Create new instance of <code>DataSourceEntry</code>.
@@ -177,9 +178,9 @@ public abstract class DataSources {
                     "] is not supported by [" + dataSourceType + "]");
             }
             try {
-                Constructor constructor = dataSourceType.getConstructor(supportedType);
+                final Constructor constructor = dataSourceType.getConstructor(supportedType);
                 return (DataSource) constructor.newInstance(object);
-            } catch (NoSuchMethodException e) {
+            } catch (final NoSuchMethodException e) {
                 LOG.severe("Can't find constructor that accept [" + object.getClass().getName() + "] for [" +
                     dataSourceType.getClass().getName());
                 throw new RuntimeException(e);

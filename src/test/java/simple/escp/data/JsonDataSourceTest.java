@@ -23,10 +23,10 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.json.JsonObject;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.json.JsonObject;
 
 public class JsonDataSourceTest {
 
@@ -34,20 +34,21 @@ public class JsonDataSourceTest {
 
     @BeforeEach
     public void setup() {
-        jsonString = "{" +
-            "\"name\": \"Steven\"," +
-            "\"age\": 28," +
-            "\"registered\": true," +
-            "\"address\": {" +
-                "\"line1\": \"address line 1\"," +
-                "\"line2\": \"address line 2\"" +
-            "}," +
-            "\"history\": [" +
-                "{ \"date\": 1, \"value\": 10 }," +
-                "{ \"date\": 2, \"value\": 20 }," +
-                "{ \"date\": 3, \"value\": 30 }" +
-            "]" +
-        "}";
+        jsonString = """
+            {\
+            "name": "Steven",\
+            "age": 28,\
+            "registered": true,\
+            "address": {\
+            "line1": "address line 1",\
+            "line2": "address line 2"\
+            },\
+            "history": [\
+            { "date": 1, "value": 10 },\
+            { "date": 2, "value": 20 },\
+            { "date": 3, "value": 30 }\
+            ]\
+            }""";
     }
 
     @Test

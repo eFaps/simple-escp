@@ -21,10 +21,9 @@ import static simple.escp.util.EscpUtil.CRLF;
 
 import java.util.List;
 
-import javax.json.JsonObject;
-
 import org.junit.jupiter.api.Test;
 
+import jakarta.json.JsonObject;
 import simple.escp.fill.FillJob;
 import simple.escp.json.JsonTemplate;
 import simple.escp.util.EscpUtil;
@@ -36,29 +35,31 @@ public class CustomDataSourceTest {
 
     @Test
     public void customDataSource_01() {
-        final String jsonTemplate = "{" +
-            "\"pageFormat\": {" +
-                "\"pageLength\": 90" +
-            "}," +
-            "\"template\": [" +
-                "\"Value: ${line1}\"," +
-                "{" +
-                    "\"table\": \"tables\"," +
-                    "\"columns\": [" +
-                        "{\"source\": \"data\", \"width\": 13}" +
-                    "]" +
-                "}" +
-            "]" +
-        "}";
+        final String jsonTemplate = """
+            {\
+            "pageFormat": {\
+            "pageLength": 90\
+            },\
+            "template": [\
+            "Value: ${line1}",\
+            {\
+            "table": "tables",\
+            "columns": [\
+            {"source": "data", "width": 13}\
+            ]\
+            }\
+            ]\
+            }""";
 
-        final String jsonData = "{" +
-            "\"line1\": \"This is line1\"," +
-            "\"tables\": [" +
-                "{\"data\": \"This is data1\"}," +
-                "{\"data\": \"This is data2\"}," +
-                "{\"data\": \"This is data3\"}" +
-            "]" +
-        "}";
+        final String jsonData = """
+            {\
+            "line1": "This is line1",\
+            "tables": [\
+            {"data": "This is data1"},\
+            {"data": "This is data2"},\
+            {"data": "This is data3"}\
+            ]\
+            }""";
 
         DataSources.register(String.class, CustomJsonDataSource.class);
         DataSources.register(JsonObject.class, CustomJsonDataSource.class);

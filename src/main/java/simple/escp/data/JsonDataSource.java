@@ -15,16 +15,16 @@
  */
 package simple.escp.data;
 
-import simple.escp.exception.InvalidPlaceholder;
-
-import javax.json.Json;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonString;
-import javax.json.JsonValue;
 import java.io.StringReader;
 import java.util.logging.Logger;
+
+import jakarta.json.Json;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
+import simple.escp.exception.InvalidPlaceholder;
 
 /**
  * This data source will read data source from JSON.  The JSON can be in form of string or <code>JsonObject</code>.
@@ -61,7 +61,7 @@ public class JsonDataSource implements DataSource {
 
     @Override
     public Object get(String member) throws InvalidPlaceholder {
-        JsonValue value = source.get(member);
+        final JsonValue value = source.get(member);
         if (value.getValueType() == JsonValue.ValueType.ARRAY) {
             return value;  // as List
         } else if (value.getValueType() == JsonValue.ValueType.NUMBER) {

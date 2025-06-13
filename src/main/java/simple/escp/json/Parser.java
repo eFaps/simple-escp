@@ -15,6 +15,11 @@
  */
 package simple.escp.json;
 
+import java.util.logging.Logger;
+
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 import simple.escp.dom.Line;
 import simple.escp.dom.PageFormat;
 import simple.escp.dom.Report;
@@ -22,10 +27,6 @@ import simple.escp.dom.TableColumn;
 import simple.escp.dom.line.ListLine;
 import simple.escp.dom.line.TableLine;
 import simple.escp.dom.line.TextLine;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
-import java.util.logging.Logger;
 
 /**
  * A helper class for parsing.
@@ -35,8 +36,8 @@ public class Parser {
     private static final Logger LOG = Logger.getLogger("simple.escp");
 
     private Report result;
-    private Integer pageLength;
-    private PageFormat pageFormat;
+    private final Integer pageLength;
+    private final PageFormat pageFormat;
     private JsonArray firstPage;
     private JsonArray lastPage;
     private JsonArray header;
@@ -129,8 +130,8 @@ public class Parser {
      * @return result in <code>String[]</code>.
      */
     private String[] jsonToString(JsonArray text) {
-        int size = (text == null ? 0 : text.size());
-        String[] result = new String[size];
+        final int size = text == null ? 0 : text.size();
+        final String[] result = new String[size];
         for (int i = 0; i < size; i++) {
             result[i] = text.getString(i);
         }
@@ -149,10 +150,10 @@ public class Parser {
 
     private TextLine[] jsonToTextLine(JsonArray text) {
         LOG.fine("Converting [" + text + "] into TextLine.");
-        int size = (text == null ? 0 : text.size());
-        TextLine[] result = new TextLine[size];
+        final int size = text == null ? 0 : text.size();
+        final TextLine[] result = new TextLine[size];
         for (int i = 0; i < size; i++) {
-            JsonValue value = text.get(i);
+            final JsonValue value = text.get(i);
             if (value.getValueType() == JsonValue.ValueType.STRING) {
                 result[i] = new TextLine(text.getString(i));
             } else {
@@ -171,7 +172,7 @@ public class Parser {
 
     private TableLine jsonToTableLine(JsonObject table) {
         LOG.fine("Converting [" + table + "] into TableLine.");
-        TableLine tableLine = new TableLine(table.getString("table"));
+        final TableLine tableLine = new TableLine(table.getString("table"));
         if (table.containsKey("border")) {
             tableLine.setDrawBorder(table.getBoolean("border", false));
         }
@@ -181,19 +182,19 @@ public class Parser {
         if (table.containsKey("underlineSeparator")) {
             tableLine.setDrawUnderlineSeparator(table.getBoolean("underlineSeparator", false));
         }
-        JsonArray columns = table.getJsonArray("columns");
+        final JsonArray columns = table.getJsonArray("columns");
         if (columns == null) {
             throw new IllegalArgumentException("Table must have 'columns'.");
         } else {
             for (int i = 0; i < columns.size(); i++) {
-                JsonObject column = columns.getJsonObject(i);
+                final JsonObject column = columns.getJsonObject(i);
                 if (!column.containsKey("source")) {
                     throw new IllegalArgumentException("Can't find 'source' for column " + i);
                 }
                 if (!column.containsKey("width")) {
                     throw new IllegalArgumentException("Can't find 'width' for column " + i);
                 }
-                TableColumn tableColumn = tableLine.addColumn(column.getString("source"), column.getInt("width"));
+                final TableColumn tableColumn = tableLine.addColumn(column.getString("source"), column.getInt("width"));
                 if (column.containsKey("caption")) {
                     tableColumn.setCaption(column.getString("caption"));
                 }
@@ -213,11 +214,11 @@ public class Parser {
      */
     private ListLine jsonToListLine(JsonObject list) {
         LOG.fine("Converting [" + list + "] into ListLine.");
-        String source = list.getString("list");
+        final String source = list.getString("list");
         if (!list.containsKey("line")) {
             throw new IllegalArgumentException("List must have 'line'.");
         }
-        String line = list.getString("line");
+        final String line = list.getString("line");
         TextLine[] header = null, footer = null;
         if (list.containsKey("header")) {
             header = jsonToTextLine(list.getJsonArray("header"));
@@ -236,14 +237,14 @@ public class Parser {
      */
     private Line[] jsonToLine(JsonArray text) {
         LOG.fine("Converting [" + text + "] into Line.");
-        int size = (text == null ? 0 : text.size());
-        Line[] result = new Line[size];
+        final int size = text == null ? 0 : text.size();
+        final Line[] result = new Line[size];
         for (int i = 0; i < size; i++) {
-            JsonValue value = text.get(i);
+            final JsonValue value = text.get(i);
             if (value.getValueType() == JsonValue.ValueType.STRING) {
                 result[i] = new TextLine(text.getString(i));
             } else if (value.getValueType() == JsonValue.ValueType.OBJECT) {
-                JsonObject object = text.getJsonObject(i);
+                final JsonObject object = text.getJsonObject(i);
                 if (object.containsKey("table")) {
                     result[i] = jsonToTableLine(object);
                 } else if (object.containsKey("list")) {
@@ -273,7 +274,7 @@ public class Parser {
         }
         if (detail != null) {
             LOG.fine("Parsing detail section");
-            for (Line line: jsonToLine(detail)) {
+            for (final Line line: jsonToLine(detail)) {
                 result.append(line, false);
             }
         }

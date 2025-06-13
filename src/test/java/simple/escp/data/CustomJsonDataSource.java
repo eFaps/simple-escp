@@ -15,15 +15,15 @@
  */
 package simple.escp.data;
 
-import simple.escp.exception.InvalidPlaceholder;
-
-import javax.json.Json;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonString;
-import javax.json.JsonValue;
 import java.io.StringReader;
+
+import jakarta.json.Json;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
+import simple.escp.exception.InvalidPlaceholder;
 
 public class CustomJsonDataSource implements DataSource {
 
@@ -48,7 +48,7 @@ public class CustomJsonDataSource implements DataSource {
 
     @Override
     public Object get(String member) throws InvalidPlaceholder {
-        JsonValue value = json.get(member);
+        final JsonValue value = json.get(member);
         if (value.getValueType() == JsonValue.ValueType.ARRAY) {
             return value;
         } else if (value.getValueType() == JsonValue.ValueType.NUMBER) {

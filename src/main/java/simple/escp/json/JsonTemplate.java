@@ -15,14 +15,6 @@
  */
 package simple.escp.json;
 
-import simple.escp.dom.Report;
-import simple.escp.Template;
-import javax.json.Json;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonString;
-import javax.json.JsonValue;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +26,15 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.logging.Logger;
+
+import jakarta.json.Json;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
+import simple.escp.Template;
+import simple.escp.dom.Report;
 
 /**
  *  This class represent a template in JSON format.
@@ -105,7 +106,7 @@ public class JsonTemplate extends Template {
 
     private static final Logger LOG = Logger.getLogger("simple.escp");
 
-    private String originalText;
+    private final String originalText;
 
     /**
      * Create a new template from a string.
@@ -167,8 +168,8 @@ public class JsonTemplate extends Template {
      * @throws IOException if error occured when reading the input stream.
      */
     public JsonTemplate(InputStream inputStream, Charset charset) throws IOException {
-        InputStreamReader isr = new InputStreamReader(inputStream, charset);
-        StringWriter sw = new StringWriter();
+        final InputStreamReader isr = new InputStreamReader(inputStream, charset);
+        final StringWriter sw = new StringWriter();
         int c;
         while ((c = isr.read()) != -1) {
             sw.write(c);
@@ -199,7 +200,7 @@ public class JsonTemplate extends Template {
      * @param json the root JSON of this template.
      */
     private void parsePageFormat(JsonObject json) {
-        JsonObject parsedPageFormat = json.getJsonObject("pageFormat");
+        final JsonObject parsedPageFormat = json.getJsonObject("pageFormat");
         if (parsedPageFormat != null) {
 
             // Line spacing
@@ -265,11 +266,11 @@ public class JsonTemplate extends Template {
      * @return result in <code>Pages</code>.
      */
     public Report parseTemplateText(JsonObject json) {
-        JsonValue template = json.get("template");
+        final JsonValue template = json.get("template");
         if (template == null) {
             throw new IllegalArgumentException("JSON Template must contains 'template'.");
         }
-        Parser parser = new Parser(getPageFormat());
+        final Parser parser = new Parser(getPageFormat());
 
         if (template.getValueType() == JsonValue.ValueType.ARRAY) {
 
@@ -281,7 +282,7 @@ public class JsonTemplate extends Template {
                 throw new IllegalArgumentException("Using object on 'template' require 'pageLength' " +
                         "to be defined in 'pageFormat'.");
             }
-            JsonObject templateObject = json.getJsonObject("template");
+            final JsonObject templateObject = json.getJsonObject("template");
             if (templateObject.containsKey("firstPage")) {
                 parser.setFirstPage(templateObject.getJsonArray("firstPage"));
             }
@@ -312,10 +313,11 @@ public class JsonTemplate extends Template {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Report parse() {
         if (report == null) {
             try (JsonReader reader = Json.createReader(new StringReader(originalText))) {
-                JsonObject json = reader.readObject();
+                final JsonObject json = reader.readObject();
                 LOG.fine("Parse pageFormat for [" + json + "]");
                 parsePageFormat(json);
                 LOG.fine("Parse template for [" + json + "]");
